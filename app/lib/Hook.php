@@ -10,6 +10,7 @@ namespace ULib;
 
 class Hook{
 	public function add() {
-		l_h("system.php");
+		l_h("system.php","theme.php");
+		lib()->load('Page');
 	}
 } 

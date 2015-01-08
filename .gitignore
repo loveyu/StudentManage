@@ -1,1 +1,4 @@
 .idea
+.idea/*
+app/cache/out/*/
+app/log/*.log

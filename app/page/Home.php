@@ -1,15 +1,32 @@
 <?php
 namespace UView;
 
-use \Core\Page;
+use ULib\Page;
 
 class Home extends Page{
 
+	function __construct(){
+
+	}
 
 	/**
 	 * Home page
 	 */
 	public function main(){
+		if(!$this->is_login()){
+			redirect([
+				'Home',
+				'login'
+			]);
+		}
+		$this->__view("home/main.php");
+	}
+
+	/**
+	 * 登陆页面
+	 */
+	public function login(){
+		$this->__view("home/login.php");
 	}
 
 	/**
