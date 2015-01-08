@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteBase /
+
+#不存在的文件直接重定向
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ /index.php [L]
+
