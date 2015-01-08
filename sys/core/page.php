@@ -43,8 +43,8 @@ class Page{
 
 	/**
 	 * 加载视图
-	 * @param string $file 文件名
-	 * @param array $param 参数列表
+	 * @param string $file  文件名
+	 * @param array  $param 参数列表
 	 */
 	protected function __view($file, $param = NULL){
 		if(is_array($file)){
@@ -52,14 +52,16 @@ class Page{
 				if(is_file(_ViewPath_ . "/$v")){
 					$this->__view_f($v, $param);
 				} else{
-					Log::write(_("Can't load view file:") . $file, Log::NOTICE);
+					trigger_error(_("Can't load view file:") . $file, E_USER_WARNING);
+					//Log::write(_("Can't load view file:") . $file, Log::NOTICE);
 				}
 			}
 		} else{
 			if(is_file(_ViewPath_ . "/$file")){
 				$this->__view_f($file, $param);
 			} else{
-				Log::write(_("Can't load view file:") . $file, Log::NOTICE);
+				trigger_error(_("Can't load view file:") . $file, E_USER_WARNING);
+				//Log::write(_("Can't load view file:") . $file, Log::NOTICE);
 			}
 		}
 	}
@@ -84,6 +86,14 @@ class Page{
 	 */
 	public static function __class_name(){
 		return get_called_class();
+	}
+
+	/**
+	 * 返回禁止使用的方法名称
+	 * @return array
+	 */
+	public static function __un_register(){
+		return get_class_methods("Core\\Page");
 	}
 }
 

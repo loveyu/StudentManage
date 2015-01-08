@@ -105,8 +105,8 @@ class Uri{
 					 * @var $class_name Page
 					 */
 					$class_name = "UView\\$v";
-					if(class_exists($class_name) && get_parent_class($class_name) === "Core\\Page"){
-						$methods = get_class_methods($class_name);
+					if(class_exists($class_name) && is_subclass_of($class_name, "Core\\Page")){
+						$methods = array_diff(get_class_methods($class_name), $class_name::__un_register());
 						if(isset($list[$id + 1])){
 							if(substr($list[$id + 1], 0, 2) != "__" && in_array($list[$id + 1], $methods)){
 								if($class_name::__class_name() !== $class_name){

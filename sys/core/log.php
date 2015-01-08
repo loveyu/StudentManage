@@ -101,7 +101,7 @@ class Log{
 	 * 程序结束错误信息输出
 	 */
 	public static function phpShowdownLog(){
-		if(($e = error_get_last()) && $e['type']==E_ERROR || $e['type']==E_COMPILE_ERROR){
+		if(($e = error_get_last()) && $e['type'] == E_ERROR || $e['type'] == E_COMPILE_ERROR){
 			call_user_func_array('\Core\Log::phpErrorLog', $e);
 		}
 	}
@@ -122,14 +122,23 @@ class Log{
 			case E_ERROR:
 				$type = "E_ERROR";
 				break;
+			case E_USER_ERROR:
+				$type = "UE_ERROR";
+				break;
 			case E_WARNING:
 				$type = "E_WARNING";
+				break;
+			case E_USER_WARNING:
+				$type = "UE_WARNING";
 				break;
 			case E_NOTICE:
 				$type = "E_NOTICE";
 				break;
+			case E_USER_NOTICE:
+				$type = "UE_NOTICE";
+				break;
 			default:
-				$type = "UNKNOWN";
+				$type = "UNKNOWN{" . $type . "}";
 		}
 		if($type !== NULL){
 			Log::write("[$type]:$message;$file:$line", Log::ERR);
