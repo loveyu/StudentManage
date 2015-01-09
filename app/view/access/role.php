@@ -3,7 +3,6 @@
  * @var $this   \UView\Access
  * @var $__list array
  */
-$detail = $this->get_user_detail();
 $this->get_header(); ?>
 	<h3>角色列表
 		<button class="btn btn-primary btn-sm" onclick="role_add()">添加</button>

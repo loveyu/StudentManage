@@ -30,6 +30,10 @@ class DB{
 		return $this->driver->get("admin", "*", ['a_name' => $name]);
 	}
 
+	public function get_admin_info_by_id($id){
+		return $this->driver->get("admin", "*", ['a_id' => $id]);
+	}
+
 	public function get_access($name){
 		$role = NULL;
 		$read = $this->driver->getReader();
@@ -48,8 +52,35 @@ class DB{
 		return $this->driver->select("role", "*");
 	}
 
+	public function get_admin_list(){
+		return $this->driver->select("admin", ['[>]role' => ['r_id' => 'r_id']], [
+			'admin.a_id',
+			'admin.a_name',
+			'admin.a_status',
+			'admin.a_ip',
+			'role.r_name',
+			'role.r_status',
+		], ['ORDER' => 'admin.a_id']);
+	}
+
+	public function admin_add($info){
+		return $this->driver->insert("admin", $info);
+	}
+
+	public function admin_exists_check($name){
+		return $this->driver->has("admin", ['a_name' => $name]);
+	}
+
+	public function update_admin_info($id, $info){
+		return $this->driver->update("admin", $info, ['a_id' => $id]);
+	}
+
 	public function role_exists_check($name){
 		return $this->driver->has("role", ['r_name' => $name]);
+	}
+
+	public function role_id_exists_check($id){
+		return $this->driver->has("role", ['r_id' => $id]);
 	}
 
 	public function role_add($info){
@@ -59,6 +90,11 @@ class DB{
 	public function role_delete($id){
 		return $this->driver->delete("role", ['r_id' => $id]);
 	}
+
+	public function admin_delete($id){
+		return $this->driver->delete("admin", ['a_id' => $id]);
+	}
+
 
 	public function role_edit($id, $name, $status){
 		return $this->driver->update("role", [

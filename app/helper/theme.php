@@ -114,3 +114,17 @@ function role_status($status){
 			return "<span class='text-warning'>未知</span>";
 	}
 }
+
+/**
+ * 生成OPTION数据
+ * @param array  $value_list
+ * @param string $select
+ * @return string
+ */
+function html_option($value_list, $select){
+	$rt = "";
+	foreach($value_list as $value => $name){
+		$rt .= "<option value=\"{$value}\"" . ($value == $select ? " selected" : "") . ">{$name}</option>";
+	}
+	return $rt;
+}

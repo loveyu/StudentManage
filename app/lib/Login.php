@@ -38,6 +38,7 @@ class Login{
 	public function auto_login(){
 		$this->user_info = $this->session->get('admin');
 		foreach([
+			'id',
 			'name',
 			'role_id',
 			'ip',
@@ -83,6 +84,15 @@ class Login{
 		return $this->status;
 	}
 
+	public function uid(){
+		return isset($this->user_info['id']) ? intval($this->user_info['id']) : -1;
+	}
+
+	public function uname(){
+
+		return isset($this->user_info['name']) ? $this->user_info['name'] : NULL;
+	}
+
 	public function detail(){
 		if($this->status){
 			$this->db = db_class();
@@ -120,6 +130,7 @@ class Login{
 
 	private function set_session($info, $ip){
 		$this->user_info = [
+			'id' => $info['a_id'],
 			'name' => $info['a_name'],
 			'role_id' => $info['r_id'],
 			'status' => $info['a_status'],

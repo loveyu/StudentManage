@@ -22,6 +22,25 @@ class Access extends Page{
 		$this->__view("access/role.php", ['list' => db_class()->get_role_list()]);
 	}
 
+	public function admin(){
+		if(!$this->check()){
+			return;
+		}
+		$edit_id = $this->__req->get('edit_id');
+		if($edit_id > 0){
+			$this->__view("access/admin_edit.php", [
+				'info' => db_class()->get_admin_info_by_id($edit_id),
+				'role_list' => $this->get_role_keymap()
+			]);
+		} else{
+			$this->__view("access/admin.php", [
+				'list' => db_class()->get_admin_list(),
+				'role_list' => $this->get_role_keymap()
+			]);
+		}
+	}
+
+
 	public function add_role(){
 		header("Content-Type: application/json; charset=utf-8");
 		if(!$this->check()){
@@ -46,6 +65,124 @@ class Access extends Page{
 			} else{
 				$rt['msg'] = "添加失败";
 			}
+		}
+		echo json_encode($rt);
+	}
+
+	function add_admin(){
+		header("Content-Type: application/json; charset=utf-8");
+		if(!$this->check()){
+			return;
+		}
+		$a_name = trim($this->__req->post('name'));
+		$a_pwd = trim($this->__req->post('pwd'));
+		$r_id = trim($this->__req->post('role'));
+		$a_salt = salt(32);
+		$a_status = trim($this->__req->post('status'));
+		$a_ip = array_unique(array_map("trim", explode("\n", trim($this->__req->post('ip')))));
+		$a_ip = implode("|", explode("|", implode("|", $a_ip)));
+
+		$rt = [
+			'status' => false,
+			'msg' => ''
+		];
+		if(empty($a_pwd)){
+			$rt['msg'] = "密码不允许为空";
+		} else{
+			$db = db_class();
+			$a_pwd = salt_hash(md5_xx($a_pwd), $a_salt);
+			if($db->admin_exists_check($a_name)){
+				$rt['msg'] = "用户已存在";
+			} else{
+				if(!$db->role_id_exists_check($r_id)){
+					$rt['msg'] = "角色不存在";
+				} else{
+					if($db->admin_add(compact('a_name', 'a_status', 'a_ip', 'a_pwd', 'a_salt', 'r_id')) > 0){
+						$rt['status'] = true;
+					} else{
+						$rt['msg'] = "添加失败";
+					}
+				}
+			}
+		}
+		echo json_encode($rt);
+	}
+
+	public function edit_admin(){
+		header("Content-Type: application/json; charset=utf-8");
+		if(!$this->check()){
+			return;
+		}
+		$a_name = trim($this->__req->post('name'));
+		$a_id = trim($this->__req->post('id'));
+		$r_id = trim($this->__req->post('role'));
+		$a_status = trim($this->__req->post('status'));
+		$a_ip = array_unique(array_map("trim", explode("\n", trim($this->__req->post('ip')))));
+		$a_ip = implode("|", explode("|", implode("|", $a_ip)));
+		if($a_name == login_class()->uname()){
+			unset($a_name);
+		}
+		$db = db_class();
+		if(isset($a_name) && $db->admin_exists_check($a_name)){
+			$rt['msg'] = "用户已存在";
+		} else{
+			if(!$db->role_id_exists_check($r_id)){
+				$rt['msg'] = "角色不存在";
+			} else{
+				if($db->update_admin_info($a_id, compact('a_name', 'a_status', 'a_ip', 'r_id')) > 0){
+					$rt['status'] = true;
+				} else{
+					$rt['msg'] = "更新失败或无修改";
+				}
+			}
+		}
+		echo json_encode($rt);
+	}
+
+	function delete_admin(){
+		header("Content-Type: application/json; charset=utf-8");
+		if(!$this->check()){
+			return;
+		}
+		$id = $this->__req->post('id');
+		$rt = [
+			'status' => false,
+			'msg' => ''
+		];
+		if($id == login_class()->uid()){
+			$rt['msg'] = "禁止删除自己";
+		} else{
+			$db = db_class();
+			$id = $db->admin_delete($id);
+			if($id == 1){
+				$rt['status'] = true;
+			} else{
+				$rt['msg'] = "删除失败";
+			}
+		}
+		echo json_encode($rt);
+	}
+
+	function admin_pwd_reset(){
+		header("Content-Type: application/json; charset=utf-8");
+		if(!$this->check()){
+			return;
+		}
+		$id = $this->__req->post('id');
+		$rt = [
+			'status' => false,
+			'msg' => ''
+		];
+		$pwd = salt(12);
+		$a_salt = salt(32);
+		$a_pwd = salt_hash(md5_xx($pwd), $a_salt);
+		$db = db_class();
+		$id = $db->update_admin_info($id, compact('a_salt', 'a_pwd'));
+		if($id == 1){
+			$rt['status'] = true;
+			$rt['msg'] = $pwd;
+		} else{
+			$rt['msg'] = "更新失败";
 		}
 		echo json_encode($rt);
 	}
@@ -110,5 +247,15 @@ class Access extends Page{
 			return false;
 		}
 		return true;
+	}
+
+	private function get_role_keymap(){
+		$list = [];
+		foreach(db_class()->get_role_list() as $v){
+			$list[$v['r_id']] = $v['r_name'];
+		}
+		asort($list);
+		return $list;
+
 	}
 }
