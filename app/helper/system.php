@@ -19,7 +19,7 @@ function salt($len = 40){
 }
 
 function md5_xx($str){
-	return md5($str."生活如此多娇");
+	return md5($str . "生活如此多娇");
 }
 
 /**
@@ -41,4 +41,61 @@ function salt_hash($hash, $salt){
  */
 function _hash($str, $raw_output = false){
 	return hash("sha256", $str, $raw_output);
+}
+
+
+/**
+ * 返回登陆类
+ * @return \ULib\Login
+ */
+function login_class(){
+	static $login = NULL;
+	if($login !== NULL){
+		return $login;
+	}
+	$lib = lib();
+	$login = $lib->using('ULogin');
+	if($login === false){
+		$lib->load('Login');
+		$login = new \ULib\Login();
+		$lib->add("ULogin", $login);
+	}
+	return $login;
+}
+
+/**
+ * 获取数据库类
+ * @return \ULib\DB
+ */
+function db_class(){
+	static $db = NULL;
+	if($db !== NULL){
+		return $db;
+	}
+	$lib = lib();
+	$db = $lib->using('UDB');
+	if($db === false){
+		$lib->load('DB');
+		$db = new \ULib\DB();
+		$lib->add("UDB", $db);
+	}
+	return $db;
+}
+
+/**
+ * 获取SESSION对象实例
+ * @return \CLib\Session
+ */
+function session_class(){
+	static $session = NULL;
+	if($session !== NULL){
+		return $session;
+	}
+	$lib = c_lib();
+	$session = $lib->using('CSession');
+	if($session === false){
+		$lib->load('session')->add("CSession", new \CLib\Session());
+		$session = $lib->using("CSession");
+	}
+	return $session;
 }

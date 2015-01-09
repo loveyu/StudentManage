@@ -1,7 +1,8 @@
 <?php
 namespace Core;
-if(!defined('_CorePath_'))
+if(!defined('_CorePath_')){
 	exit;
+}
 
 /**
  * 配置文件操作类
@@ -22,7 +23,6 @@ class Config{
 
 	/**
 	 * 读取配置文件并保存
-	 *
 	 * @param string $file_path 配置文件路径，无目录
 	 * @return mixed|null
 	 */
@@ -37,22 +37,23 @@ class Config{
 				}
 			}
 			return $config;
+		} else{
+			trigger_error(_("Config file can not found.") . $file_path, E_USER_ERROR);
 		}
-		return null;
+		return NULL;
 	}
 
 	/**
 	 * 获取配置
-	 *
 	 * @return array|string|null|bool|object
 	 */
 	public function get(){
-		$rs = & $this->_config;
+		$rs = &$this->_config;
 		foreach(func_get_args() as $v){
 			if(isset($rs[$v])){
-				$rs = & $rs[$v];
+				$rs = &$rs[$v];
 			} else{
-				return null;
+				return NULL;
 			}
 		}
 		return $rs;
@@ -61,12 +62,11 @@ class Config{
 
 	/**
 	 * 修改指定配置文件
-	 *
 	 * @param array|string $key
-	 * @param mixed $value
+	 * @param mixed        $value
 	 */
 	public function set($key, $value){
-		$p = & $this->_config;
+		$p = &$this->_config;
 		if(!is_array($key)){
 			$key = [$key];
 		}
@@ -86,7 +86,7 @@ class Config{
 					return;
 				}
 			}
-			$p = & $p[$v];
+			$p = &$p[$v];
 		}
 	}
 }

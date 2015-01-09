@@ -6,7 +6,7 @@ use ULib\Page;
 class Home extends Page{
 
 	function __construct(){
-
+		parent::__construct();
 	}
 
 	/**
@@ -26,7 +26,14 @@ class Home extends Page{
 	 * 登陆页面
 	 */
 	public function login(){
-		$this->__view("home/login.php");
+		$msg = "";
+		if($this->__req->is_post()){
+			$msg = login_class()->login($this->__req->post('user_name'), $this->__req->post('user_pwd'));
+			if($msg === true){
+				redirect('');
+			}
+		}
+		$this->__view("home/login.php", ['msg' => $msg]);
 	}
 
 	/**

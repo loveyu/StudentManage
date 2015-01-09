@@ -8,8 +8,31 @@ if(!defined('_CorePath_')){
  * 页面基础类
  */
 class Page{
+	/**
+	 * @var Core
+	 */
+	protected $__core;
+	/**
+	 * @var Lib
+	 */
+	protected $__lib;
+
+	/**
+	 * @var Uri
+	 */
+	protected $__uri;
+
+	/**
+	 * @var Request
+	 */
+	protected $__req;
+
 	/* 默认构造器 */
 	function __construct(){
+		$this->__core = Core::getInstance();
+		$this->__lib = $this->__core->getLib();
+		$this->__uri = $this->__core->getUri();
+		$this->__req = $this->__core->getRequest();
 	}
 
 	/**
@@ -18,7 +41,7 @@ class Page{
 	 */
 	protected function __load(){
 		return call_user_func_array(array(
-			Core::getInstance()->getUri(),
+			$this->__uri,
 			'load'
 		), func_get_args());
 	}
@@ -27,7 +50,7 @@ class Page{
 	 * 加载404页面
 	 */
 	protected function __load_404(){
-		Core::getInstance()->getUri()->load_404();
+		$this->__uri->load_404();
 	}
 
 	/**
@@ -36,7 +59,7 @@ class Page{
 	 */
 	protected function __lib(){
 		return call_user_func_array(array(
-			Core::getInstance()->getLib(),
+			$this->__lib,
 			'load'
 		), func_get_args());
 	}
