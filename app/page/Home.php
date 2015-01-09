@@ -19,6 +19,7 @@ class Home extends Page{
 				'login'
 			]);
 		}
+		$this->setTitle("管理");
 		$this->__view("home/main.php");
 	}
 
@@ -33,7 +34,13 @@ class Home extends Page{
 				redirect('');
 			}
 		}
+		$this->setTitle("管理员登录");
 		$this->__view("home/login.php", ['msg' => $msg]);
+	}
+
+	public function logout(){
+		session_class()->destroy();
+		redirect('Home', 'login');
 	}
 
 	/**

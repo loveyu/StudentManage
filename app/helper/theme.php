@@ -71,3 +71,46 @@ function mkt_meta($list){
 	}
 	return "<meta$d />";
 }
+
+//---相关用户信息函数------------
+/**
+ * 角色相关信息
+ * @param $info
+ * @return string
+ */
+function role_info($info){
+	if(empty($info)){
+		return "未知角色";
+	}
+	return $info['name'] . "[" . $info['id'] . "]" . (!$info['status'] ? "(<span class='text-success'>正常</span>)" : "(<span class='text-danger'>禁用</span>)");
+}
+
+/**
+ * 用户状态
+ * @param $status
+ * @return string
+ */
+function user_status($status){
+	$arr = [
+		0 => '正常',
+		1 => '限制登录',
+		2 => '解除权限'
+	];
+	return isset($arr[$status]) ? $arr[$status] : "[未知]";
+}
+
+/**
+ * 获取角色的状态
+ * @param $status
+ * @return string
+ */
+function role_status($status){
+	switch($status){
+		case 0:
+			return "<span class='text-success'>正常</span>";
+		case 1:
+			return "<span class='text-danger'>禁用</span>";
+		default:
+			return "<span class='text-warning'>未知</span>";
+	}
+}

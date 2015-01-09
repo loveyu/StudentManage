@@ -14,15 +14,47 @@ return [
 	],
 	'menu' => [
 		[
-			'url' => [''],
+			'url' => [],
 			'name' => '我的信息',
 		],
 		[
 			'url' => [
-				'Profile',
-				'edit'
+				'Access',
+				'role'
 			],
-			'name' => '编辑个人信息',
+			'name' => '角色管理',
+			'role' => 1
 		],
+		[
+			'url' => [
+				'Access',
+				'admin'
+			],
+			'name' => '用户管理',
+			'role' => 1
+		],
+		[
+			'url' => [
+				'Access',
+				'permission'
+			],
+			'name' => '权限管理',
+			'role' => 1
+		],
+		[
+			'url' => [
+				'Access',
+				'access_set'
+			],
+			'name' => '角色权限管理',
+			'role' => 1
+		],
+		[
+			'url' => [
+				'Home',
+				'logout'
+			],
+			'name' => '退出登录'
+		]
 	]
 ];

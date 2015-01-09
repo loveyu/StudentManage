@@ -1,3 +1,12 @@
+table.table tbody td{
+	vertical-align: middle;
+}
+.table-striped>tbody>tr:nth-child(odd){
+	background-color: rgba(249, 249, 249, 0.52);
+}
+.table-striped>tbody>tr:hover{
+	background-color: rgb(249, 249, 249);
+}
 /* 登陆页面 */
 .login-form {
 	width: 100%;
@@ -35,17 +44,24 @@
 }
 
 #LeftMenu {
-	height: 600px;
 	background: rgba(238, 238, 238, 0.49);
 	text-align: right;
 }
 
 #RightContent {
-	height: 600px;
 	background: rgba(199, 199, 199, 0.49);
 }
 #RightContent .title{
 	color: #555;
 	text-shadow: #aaa 1px 1px;
 	text-align: center;
+}
+
+.user-info dd,.user-info dt{
+	padding-top: 15px;
+}
+
+.inner_form{
+	max-width: 400px;
+	margin: 0 auto;
 }

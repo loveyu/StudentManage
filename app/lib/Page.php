@@ -33,6 +33,13 @@ class Page extends \Core\Page{
 		$this->__view("common/footer.php");
 	}
 
+	public function get_user_detail(){
+		if($this->is_login()){
+			return $this->login->detail();
+		}
+		return NULL;
+	}
+
 	/**
 	 * 设置标题
 	 * @param $title string
@@ -76,14 +83,11 @@ class Page extends \Core\Page{
 	public function get_user_menu($class = "active"){
 		$list = cfg()->get('menu');
 		$rt = "";
-		$ui = $this->__uri->getUriInfo()->getUrlList();
+		$ui = implode("/", $this->__uri->getUriInfo()->getUrlList());
 		foreach($list as $v){
-			$flag = [
-				$v['url'][0] == (isset($ui[0]) ? $ui[0] : ""),
-				false
-			];
-			if(!isset($v['hide']) || !$v['hide'] || ($v['hide'] && $flag[0])){
-				$rt .= "<li role=\"presentation\"" . ($flag[0] ? " class=\"$class\"" : '') . "><a href='" . get_url($v['url']) . "'>" . $v['name'] . "</a></li>\n";
+			$flag = $ui == implode("/", $v['url']);
+			if((!isset($v['role']) || login_class()->check_role($v['role'])) && (!isset($v['hide']) || !$v['hide'] || ($v['hide'] && $flag[0]))){
+				$rt .= "<li role=\"presentation\"" . ($flag ? " class=\"$class\"" : '') . "><a href='" . get_url($v['url']) . "'>" . $v['name'] . "</a></li>\n";
 			}
 		}
 		return $rt;
