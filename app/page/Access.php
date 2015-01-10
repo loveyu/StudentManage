@@ -47,6 +47,73 @@ class Access extends Page{
 		$this->__view("access/permission.php", ['list' => db_class()->get_permission_list()]);
 	}
 
+	public function access_set(){
+		if(!$this->check()){
+			return;
+		}
+		$id = $this->__req->get('id');
+		if($id > 0){
+			$db = db_class();
+			$this->__view("access/access_set.php", [
+				'role' => $db->get_role_info($id),
+				'role_access' => list2keymap($db->get_role_access($id), "p_id", [
+					'ac_w',
+					'ac_r'
+				]),
+				'permission' => list2keymap($db->get_permission_list(), 'p_id', 'p_alias')
+			]);
+		} else{
+			$this->__view("access/access_set_get_role.php", ['role_list' => db_class()->get_role_list()]);
+		}
+	}
+
+	public function add_access(){
+		header("Content-Type: application/json; charset=utf-8");
+		if(!$this->check()){
+			return;
+		}
+		$db = db_class();
+		$p_id = intval($this->__req->post('p_id'));
+		$r_id = intval($this->__req->post('r_id'));
+		$ac_w = $this->__req->post('write');
+		$ac_r = $this->__req->post('read');
+		$rt = [
+			'status' => false,
+			'msg' => ''
+		];
+		$ac_r = $ac_r ? 1 : 0;
+		$ac_w = $ac_w ? 1 : 0;
+
+		$id = $db->access_add(compact('p_id', 'r_id', 'ac_w', 'ac_r'));
+		if($id == 0){
+			$rt['status'] = true;
+		} else{
+			$rt['msg'] = "添加失败";
+		}
+
+		echo json_encode($rt);
+	}
+
+	public function delete_access(){
+		header("Content-Type: application/json; charset=utf-8");
+		if(!$this->check()){
+			return;
+		}
+		$r_id = $this->__req->post('r_id');
+		$p_id = $this->__req->post('p_id');
+		$rt = [
+			'status' => false,
+			'msg' => ''
+		];
+		$db = db_class();
+		$id = $db->access_delete($r_id, $p_id);
+		if($id == 1){
+			$rt['status'] = true;
+		} else{
+			$rt['msg'] = "删除失败";
+		}
+		echo json_encode($rt);
+	}
 
 	public function add_role(){
 		header("Content-Type: application/json; charset=utf-8");
@@ -310,6 +377,7 @@ class Access extends Page{
 		}
 		echo json_encode($rt);
 	}
+
 
 	public function edit_role(){
 		header("Content-Type: application/json; charset=utf-8");

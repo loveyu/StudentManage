@@ -26,6 +26,10 @@ class DB{
 		}
 	}
 
+	public function get_error(){
+		return $this->driver->error();
+	}
+
 	public function get_admin_info($name){
 		return $this->driver->get("admin", "*", ['a_name' => $name]);
 	}
@@ -63,7 +67,7 @@ class DB{
 	}
 
 	public function permission_get($id){
-		return $this->driver->get("permission","*",['p_id'=>$id]);
+		return $this->driver->get("permission", "*", ['p_id' => $id]);
 	}
 
 	public function get_access($name){
@@ -74,6 +78,14 @@ class DB{
 			$role = $p->fetchAll(\PDO::FETCH_ASSOC)[0];
 		}
 		return compact('role');
+	}
+
+	public function access_add($info){
+		return $this->driver->insert("access", $info);
+	}
+
+	public function access_delete($r_id, $p_id){
+		return $this->driver->delete("access", ['AND' => compact('r_id', 'p_id')]);
 	}
 
 	public function update_user_info($name, $info){
@@ -101,6 +113,14 @@ class DB{
 
 	public function admin_exists_check($name){
 		return $this->driver->has("admin", ['a_name' => $name]);
+	}
+
+	public function get_role_access($role){
+		return $this->driver->select("access", "*", ['r_id' => $role]);
+	}
+
+	public function get_role_info($id){
+		return $this->driver->get("role", "*", ['r_id' => $id]);
 	}
 
 	public function update_admin_info($id, $info){
