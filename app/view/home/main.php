@@ -23,8 +23,8 @@ $this->get_header();
 		<?php if(!empty($__role_access)): ?>
 			<dt>权限列表</dt>
 			<dd><?php foreach($__role_access as $v): ?>
-					<button class="btn btn-danger btn-sm"><?php echo $v['p_alias'] ?>&nbsp;[<?php echo $v['p_name'] ?>]&nbsp;(<?php echo access_status($v) ?>)
-					</button>
+					<span class="label label-primary"><?php echo $v['p_alias'] ?>&nbsp;[<?php echo $v['p_name'] ?>]&nbsp;(<?php echo access_status($v) ?>)
+					</span>
 				<?php endforeach; ?></dd>
 		<?php endif; ?>
 	</dl>
