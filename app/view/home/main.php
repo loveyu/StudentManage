@@ -22,8 +22,8 @@ $this->get_header();
 		</dd>
 		<?php if(!empty($__role_access)): ?>
 			<dt>权限列表</dt>
-			<dd><?php foreach($__role_access as $v): ?>
-					<span class="label label-primary"><?php echo $v['p_alias'] ?>&nbsp;[<?php echo $v['p_name'] ?>]&nbsp;(<?php echo access_status($v) ?>)
+			<dd style="line-height: 2.5;vertical-align: top"><?php foreach($__role_access as $v): ?>
+					<span class="btn btn-sm btn-success"><?php echo $v['p_alias'] ?>&nbsp;[<?php echo $v['p_name'] ?>]&nbsp;(<?php echo access_status($v) ?>)
 					</span>
 				<?php endforeach; ?></dd>
 		<?php endif; ?>

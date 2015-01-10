@@ -7,7 +7,7 @@
 $this->get_header();
 ?>
 	<h4>修改用户信息</h4>
-	<form id="EditAdmin" action="<?php echo get_url('Access', 'edit_admin') ?>" method="post" class="inner_form" style="max-width: 600px">
+	<form id="EditAdmin" action="<?php echo get_url('Access', 'edit_admin') ?>" method="post" style="max-width: 600px">
 		<div class="form-group">
 			<label class="control-label sr-only" for="EditAdminID">ID</label>
 			<input type="text" disabled class="form-control" id="EditAdminID" value="ID : <?php echo $__info['a_id'] ?>">

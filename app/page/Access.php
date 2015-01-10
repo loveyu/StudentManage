@@ -290,20 +290,25 @@ class Access extends Page{
 		$a_status = trim($this->__req->post('status'));
 		$a_ip = array_unique(array_map("trim", explode("\n", trim($this->__req->post('ip')))));
 		$a_ip = implode("|", explode("|", implode("|", $a_ip)));
-		if($a_name == login_class()->uname()){
-			unset($a_name);
-		}
 		$db = db_class();
-		if(isset($a_name) && $db->admin_exists_check($a_name)){
-			$rt['msg'] = "用户已存在";
-		} else{
-			if(!$db->role_id_exists_check($r_id)){
-				$rt['msg'] = "角色不存在";
+		$info = $db->get_admin_info_by_id($a_id);
+		if(!isset($info['a_id']) || $info['a_id']!=$a_id){
+			$rt['msg'] = "数据有误";
+		}else{
+			if($a_name == $info['a_name']){
+				unset($a_name);
+			}
+			if(isset($a_name) && $db->admin_exists_check($a_name)){
+				$rt['msg'] = "用户已存在";
 			} else{
-				if($db->update_admin_info($a_id, compact('a_name', 'a_status', 'a_ip', 'r_id')) > 0){
-					$rt['status'] = true;
+				if(!$db->role_id_exists_check($r_id)){
+					$rt['msg'] = "角色不存在";
 				} else{
-					$rt['msg'] = "更新失败或无修改";
+					if($db->update_admin_info($a_id, compact('a_name', 'a_status', 'a_ip', 'r_id')) > 0){
+						$rt['status'] = true;
+					} else{
+						$rt['msg'] = "更新失败或无修改";
+					}
 				}
 			}
 		}
