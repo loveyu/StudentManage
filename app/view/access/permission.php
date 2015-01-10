@@ -95,7 +95,7 @@ $this->get_header(); ?>
 	</div>
 	<script>
 		function permission_add() {
-			modal_show("添加角色", $("#AddPermission").html(), {
+			modal_show("添加权限", $("#AddPermission").html(), {
 				type: 'shown', call: function () {
 					$(".inner_form").ajaxForm(function (data) {
 						if (data.status) {
@@ -108,7 +108,7 @@ $this->get_header(); ?>
 			});
 		}
 		function permission_edit(id, alias, name, status) {
-			modal_show("编辑角色", $("#EditPermission").html(), {
+			modal_show("编辑权限", $("#EditPermission").html(), {
 				type: 'shown', call: function () {
 					$(".EditPermissionName").val(name);
 					$(".EditPermissionAlias").val(alias);
