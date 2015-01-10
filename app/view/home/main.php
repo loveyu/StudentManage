@@ -1,9 +1,11 @@
 <?php
 /**
- * @var $this \UView\Home
+ * @var $this          \UView\Home
+ * @var $__role_access array
  */
 $detail = $this->get_user_detail();
-$this->get_header(); ?>
+$this->get_header();
+?>
 	<dl class="dl-horizontal user-info">
 		<dt>基本信息</dt>
 		<dd>
@@ -18,6 +20,13 @@ $this->get_header(); ?>
 		<dd>
 			<button id="EditPassword" type="button" class="btn btn-warning">修改密码</button>
 		</dd>
+		<?php if(!empty($__role_access)): ?>
+			<dt>权限列表</dt>
+			<dd><?php foreach($__role_access as $v): ?>
+					<button class="btn btn-danger btn-sm"><?php echo $v['p_alias'] ?>&nbsp;[<?php echo $v['p_name'] ?>]&nbsp;(<?php echo access_status($v) ?>)
+					</button>
+				<?php endforeach; ?></dd>
+		<?php endif; ?>
 	</dl>
 	<script>
 		jQuery(function ($) {

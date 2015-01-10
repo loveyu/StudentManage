@@ -89,8 +89,11 @@ class Login{
 	}
 
 	public function uname(){
-
 		return isset($this->user_info['name']) ? $this->user_info['name'] : NULL;
+	}
+
+	public function role_id(){
+		return isset($this->user_info['role_id']) ? $this->user_info['role_id'] : NULL;
 	}
 
 	public function detail(){

@@ -20,7 +20,14 @@ class Home extends Page{
 			]);
 		}
 		$this->setTitle("管理");
-		$this->__view("home/main.php");
+		$this->__view("home/main.php", [
+			'role_access' => list2keymap(db_class()->get_role_access_and_name(login_class()->role_id()), "p_id", [
+				'ac_w',
+				'p_name',
+				'p_alias',
+				'ac_r'
+			])
+		]);
 	}
 
 	/**

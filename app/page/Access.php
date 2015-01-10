@@ -184,11 +184,15 @@ class Access extends Page{
 			'msg' => ''
 		];
 		$db = db_class();
-		$id = $db->permission_delete($id);
-		if($id == 1){
-			$rt['status'] = true;
+		if($db->rely_permission($id)){
+			$rt['msg'] = "存在依赖关系，无法删除";
 		} else{
-			$rt['msg'] = "删除失败";
+			$id = $db->permission_delete($id);
+			if($id == 1){
+				$rt['status'] = true;
+			} else{
+				$rt['msg'] = "删除失败";
+			}
 		}
 		echo json_encode($rt);
 	}
@@ -320,11 +324,15 @@ class Access extends Page{
 			$rt['msg'] = "禁止删除自己";
 		} else{
 			$db = db_class();
-			$id = $db->admin_delete($id);
-			if($id == 1){
-				$rt['status'] = true;
+			if($db->rely_admin($id)){
+				$rt['msg'] = "存在依赖关系，无法删除";
 			} else{
-				$rt['msg'] = "删除失败";
+				$id = $db->admin_delete($id);
+				if($id == 1){
+					$rt['status'] = true;
+				} else{
+					$rt['msg'] = "删除失败";
+				}
 			}
 		}
 		echo json_encode($rt);
@@ -368,11 +376,15 @@ class Access extends Page{
 			$rt['msg'] = "禁止删除1号角色";
 		} else{
 			$db = db_class();
-			$id = $db->role_delete($id);
-			if($id == 1){
-				$rt['status'] = true;
+			if($db->rely_role($id)){
+				$rt['msg'] = "存在依赖关系，无法删除";
 			} else{
-				$rt['msg'] = "删除失败";
+				$id = $db->role_delete($id);
+				if($id == 1){
+					$rt['status'] = true;
+				} else{
+					$rt['msg'] = "删除失败";
+				}
 			}
 		}
 		echo json_encode($rt);

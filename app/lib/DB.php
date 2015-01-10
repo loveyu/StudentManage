@@ -119,6 +119,17 @@ class DB{
 		return $this->driver->select("access", "*", ['r_id' => $role]);
 	}
 
+	public function get_role_access_and_name($role){
+		return $this->driver->select("access", ['[>]permission' => ['p_id' => 'p_id']], [
+			'access.r_id',
+			'access.p_id',
+			'access.ac_w',
+			'access.ac_r',
+			'permission.p_name',
+			'permission.p_alias'
+		], ['r_id' => $role]);
+	}
+
 	public function get_role_info($id){
 		return $this->driver->get("role", "*", ['r_id' => $id]);
 	}
@@ -153,5 +164,17 @@ class DB{
 			'r_name' => $name,
 			'r_status' => $status
 		], ['r_id' => $id]);
+	}
+
+	public function rely_admin($id){
+		return false;
+	}
+
+	public function rely_permission($id){
+		return $this->driver->has("access", ['p_id' => $id]);
+	}
+
+	public function rely_role($id){
+		return $this->driver->has("access", ['r_id' => $id]) || $this->driver->has("admin", ['r_id' => $id]);
 	}
 }
