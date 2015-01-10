@@ -116,6 +116,15 @@ function role_status($status){
 }
 
 /**
+ * 获取权限的状态
+ * @param $status
+ * @return string
+ */
+function permission_status($status){
+	return role_status($status);
+}
+
+/**
  * 生成OPTION数据
  * @param array  $value_list
  * @param string $select

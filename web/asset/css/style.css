@@ -65,3 +65,7 @@ table.table tbody td{
 	max-width: 400px;
 	margin: 0 auto;
 }
+
+h4.not_found{
+	padding: 10px 5px;
+}

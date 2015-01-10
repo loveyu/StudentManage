@@ -26,7 +26,7 @@ $this->get_header(); ?>
 					<td><?php echo role_status($v['r_status']) ?></td>
 					<td>
 						<button class="btn btn-default btn-sm"
-								onclick="role_edit(<?php echo $v['r_id'] ?>,'<?php echo htmlentities($v['r_name']) ?>',<?php echo $v['r_status'] ?>)">
+								onclick="role_edit(<?php echo $v['r_id'] ?>,'<?php echo htmlspecialchars($v['r_name']) ?>',<?php echo $v['r_status'] ?>)">
 							编辑
 						</button>
 						<?php if($v['r_id'] != 1): ?>
@@ -38,7 +38,7 @@ $this->get_header(); ?>
 		</table>
 	</div>
 <?php else: ?>
-	<h4 class="bg-danger">无角色</h4>
+	<h4 class="bg-danger not_found">无角色</h4>
 <?php endif; ?>
 	<div id="AddRole" style="display: none">
 		<form action="<?php echo get_url('Access', 'add_role') ?>" method="post" class="inner_form">

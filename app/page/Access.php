@@ -40,6 +40,13 @@ class Access extends Page{
 		}
 	}
 
+	public function permission(){
+		if(!$this->check()){
+			return;
+		}
+		$this->__view("access/permission.php", ['list' => db_class()->get_permission_list()]);
+	}
+
 
 	public function add_role(){
 		header("Content-Type: application/json; charset=utf-8");
@@ -64,6 +71,99 @@ class Access extends Page{
 				$rt['status'] = true;
 			} else{
 				$rt['msg'] = "添加失败";
+			}
+		}
+		echo json_encode($rt);
+	}
+
+	public function add_permission(){
+		header("Content-Type: application/json; charset=utf-8");
+		if(!$this->check()){
+			return;
+		}
+		$db = db_class();
+		$p_name = $this->__req->post('name');
+		$p_alias = $this->__req->post('alias');
+		$p_status = $this->__req->post('status');
+		$rt = [
+			'status' => false,
+			'msg' => ''
+		];
+		if(preg_match("/^[a-z_]+$/", $p_name) != 1){
+			$rt['msg'] = '名称检测错误';
+		} else{
+			if($db->check_permission_exists($p_name)){
+				$rt['msg'] = '当前权限已存在';
+			} else{
+				$id = $db->permission_add(compact('p_name', 'p_alias', 'p_status'));
+				if($id > 0){
+					$rt['status'] = true;
+				} else{
+					$rt['msg'] = "添加失败";
+				}
+			}
+		}
+		echo json_encode($rt);
+	}
+
+	function delete_permission(){
+		header("Content-Type: application/json; charset=utf-8");
+		if(!$this->check()){
+			return;
+		}
+		$id = $this->__req->post('id');
+		$rt = [
+			'status' => false,
+			'msg' => ''
+		];
+		$db = db_class();
+		$id = $db->permission_delete($id);
+		if($id == 1){
+			$rt['status'] = true;
+		} else{
+			$rt['msg'] = "删除失败";
+		}
+		echo json_encode($rt);
+	}
+
+	public function edit_permission(){
+		header("Content-Type: application/json; charset=utf-8");
+		if(!$this->check()){
+			return;
+		}
+		$p_id = $this->__req->post('id');
+		$p_alias = $this->__req->post('alias');
+		$p_name = $this->__req->post('name');
+		$p_status = $this->__req->post('status');
+		$rt = [
+			'status' => false,
+			'msg' => ''
+		];
+
+		$db = db_class();
+		$data = $db->permission_get($p_id);
+		if(!isset($data['p_name'])){
+			$rt['msg'] = "数据不存在";
+		} else{
+			if($data['p_name'] == $p_name){
+				unset($p_name);
+			}
+			if(isset($p_name)){
+				if(preg_match("/^[a-z_]+$/", $p_name) != 1){
+					$rt['msg'] = '名称检测错误';
+				} else{
+					if($db->check_permission_exists($p_name)){
+						$rt['msg'] = '当前权限已存在';
+					}
+				}
+			}
+		}
+		if(empty($rt['msg'])){
+			$id = $db->update_permission_by_id($p_id, compact('p_alias', 'p_name', 'p_status'));
+			if($id == 1){
+				$rt['status'] = true;
+			} else{
+				$rt['msg'] = "编辑失败或有冲突或无改变";
 			}
 		}
 		echo json_encode($rt);

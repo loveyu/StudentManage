@@ -34,6 +34,38 @@ class DB{
 		return $this->driver->get("admin", "*", ['a_id' => $id]);
 	}
 
+	public function check_permission_exists($name){
+		return $this->driver->has("permission", ['p_name' => $name]);
+	}
+
+	public function check_permission_exists_by_id($id){
+		return $this->driver->has("permission", ['p_id' => $id]);
+	}
+
+	public function permission_add($info){
+		return $this->driver->insert("permission", $info);
+	}
+
+	public function get_permission_list(){
+		return $this->driver->select("permission", "*");
+	}
+
+	public function update_permission($name, $info){
+		return $this->driver->update("permission", $info, ['p_name' => $name]);
+	}
+
+	public function update_permission_by_id($id, $info){
+		return $this->driver->update("permission", $info, ['p_id' => $id]);
+	}
+
+	public function permission_delete($id){
+		return $this->driver->delete("permission", ['p_id' => $id]);
+	}
+
+	public function permission_get($id){
+		return $this->driver->get("permission","*",['p_id'=>$id]);
+	}
+
 	public function get_access($name){
 		$role = NULL;
 		$read = $this->driver->getReader();

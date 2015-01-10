@@ -44,7 +44,7 @@ $this->get_header();
 		</table>
 	</div>
 <?php else: ?>
-	<h4 class="bg-danger">无角色</h4>
+	<h4 class="bg-danger not_found">无管理员</h4>
 <?php endif; ?>
 	<div id="AddAdmin" style="display: none">
 		<form action="<?php echo get_url('Access', 'add_admin') ?>" method="post" class="inner_form">
