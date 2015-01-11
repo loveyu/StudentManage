@@ -9,6 +9,20 @@ class Home extends Page{
 		parent::__construct();
 	}
 
+	public function test(){
+		$db = db_class()->getDriver();
+		for($i = 2; $i < 40; $i++){
+			$k = sprintf("%04d", $i);
+//			$db->insert("info_college", [
+//				'ico_id' => $k,
+//				'ic_name' => '东校区',
+//				'ico_tel' => '123456',
+//				'ico_name' => salt(15),
+//				'ico_teacher' => salt(10)
+//			]);
+		}
+	}
+
 	/**
 	 * Home page
 	 */

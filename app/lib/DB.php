@@ -26,6 +26,14 @@ class DB{
 		}
 	}
 
+	/**
+	 * @return Sql
+	 */
+	public function getDriver(){
+		return $this->driver;
+	}
+
+
 	public function get_error(){
 		return $this->driver->error();
 	}
