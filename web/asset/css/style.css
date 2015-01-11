@@ -72,3 +72,7 @@ h4.not_found{
 .padding10{
 	padding: 10px 5px;
 }
+
+.add_form{
+	max-width: 600px;
+}

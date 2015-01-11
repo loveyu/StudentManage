@@ -83,6 +83,25 @@ function db_class(){
 }
 
 /**
+ * 获取权限操作
+ * @return \ULib\Access
+ */
+function access_class(){
+	static $access = NULL;
+	if($access !== NULL){
+		return $access;
+	}
+	$lib = lib();
+	$access = $lib->using('UAccess');
+	if($access === false){
+		$lib->load('Access');
+		$access = new \ULib\Access();
+		$lib->add("UAccess", $access);
+	}
+	return $access;
+}
+
+/**
  * 获取SESSION对象实例
  * @return \CLib\Session
  */

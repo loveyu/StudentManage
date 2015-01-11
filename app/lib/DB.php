@@ -130,6 +130,34 @@ class DB{
 		], ['r_id' => $role]);
 	}
 
+	public function get_admin_allow_access($aid){
+		$SQL = <<<SQL
+SELECT
+	ac_r as r,
+	ac_w as w,
+	p_name as name
+FROM
+	access
+INNER JOIN role ON role.r_id = access.r_id
+INNER JOIN permission ON permission.p_id = access.p_id
+INNER JOIN admin ON admin.r_id = role.r_id
+WHERE
+	admin.a_id = :aid
+AND admin.a_status = 0
+AND r_status = 0;
+SQL;
+		$stmt = $this->driver->getReader()->prepare($SQL);
+		$stmt->bindValue(":aid", $aid);
+		if($stmt->execute()){
+			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		}
+		return false;
+	}
+
+	public function base_info_insert($table, $info){
+		return $this->driver->insert($table, $info);
+	}
+
 	public function get_role_info($id){
 		return $this->driver->get("role", "*", ['r_id' => $id]);
 	}

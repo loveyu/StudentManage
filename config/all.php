@@ -51,6 +51,60 @@ return [
 		],
 		[
 			'url' => [
+				'BaseInfo',
+				'op',
+				'campus_info'
+			],
+			'name' => '校园信息',
+			'access' => 'campus_info'
+		],
+		[
+			'url' => [
+				'BaseInfo',
+				'op',
+				'college_info'
+			],
+			'name' => '学院信息',
+			'access' => 'college_info'
+		],
+		[
+			'url' => [
+				'BaseInfo',
+				'op',
+				'discipline_info'
+			],
+			'name' => '专业信息',
+			'access' => 'discipline_info'
+		],
+		[
+			'url' => [
+				'BaseInfo',
+				'op',
+				'class_info'
+			],
+			'name' => '班级信息',
+			'access' => 'class_info'
+		],
+		[
+			'url' => [
+				'BaseInfo',
+				'op',
+				'curriculum_info'
+			],
+			'name' => '课程信息',
+			'access' => 'curriculum_info'
+		],
+		[
+			'url' => [
+				'BaseInfo',
+				'op',
+				'teacher_info'
+			],
+			'name' => '教师信息',
+			'access' => 'teacher_info'
+		],
+		[
+			'url' => [
 				'Home',
 				'logout'
 			],

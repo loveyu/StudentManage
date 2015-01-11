@@ -84,13 +84,21 @@ class Page extends \Core\Page{
 		$list = cfg()->get('menu');
 		$rt = "";
 		$ui = implode("/", $this->__uri->getUriInfo()->getUrlList());
+		$access = access_class();
 		foreach($list as $v){
 			$flag = $ui == implode("/", $v['url']);
 			if((!isset($v['role']) || login_class()->check_role($v['role'])) && (!isset($v['hide']) || !$v['hide'] || ($v['hide'] && $flag[0]))){
+				if(isset($v['access']) && !$access->has($v['access'])){
+					continue;
+				}
 				$rt .= "<li role=\"presentation\"" . ($flag ? " class=\"$class\"" : '') . "><a href='" . get_url($v['url']) . "'>" . $v['name'] . "</a></li>\n";
 			}
 		}
 		return $rt;
+	}
+
+	public function permission_deny(){
+		$this->__view("home/permission_deny.php");
 	}
 
 	public static function __un_register(){
@@ -105,9 +113,9 @@ class Page extends \Core\Page{
 		} else{
 			echo $content;
 		}
-		@ob_flush();
+//		@ob_flush();
 		@flush();
-		@ob_end_flush();
+//		@ob_end_flush();
 	}
 
 }
