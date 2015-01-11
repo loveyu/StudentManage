@@ -184,3 +184,17 @@ function list2keymap($list, $key, $value){
 	}
 	return $rt;
 }
+
+function get_campus_info(){
+	$db = db_class();
+	return list2keymap($db->get_campus_list(), 'ic_name', 'ic_name');
+}
+
+/**
+ * 如果存在返回True
+ * @param $name
+ * @return bool
+ */
+function check_campus_info($name){
+	return db_class()->check_campus_check($name);
+}

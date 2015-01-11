@@ -158,6 +158,14 @@ SQL;
 		return $this->driver->insert($table, $info);
 	}
 
+	public function get_campus_list(){
+		return $this->driver->select('info_campus', "*");
+	}
+
+	public function check_campus_check($name){
+		return $this->driver->has('info_campus', ['ic_name' => $name]);
+	}
+
 	public function get_role_info($id){
 		return $this->driver->get("role", "*", ['r_id' => $id]);
 	}

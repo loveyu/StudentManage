@@ -18,6 +18,9 @@ $this->get_header(); ?>
 								   value="<?php echo isset($v['def']) ? $v['def'] : ""?>" id="ID_<?php echo $name ?>">
 							<?php break;
 						case "select": ?>
+							<select class="form-control" id="ID_<?php echo $name ?>" name="<?php echo $name ?>">
+								<?php echo html_option(isset($v['select_func']) ? call_user_func($v['select_func']) : (isset($v['select_list']) ? $v['select_list'] : []), "") ?>
+							</select>
 							<?php
 							break;
 						case "textarea": ?>
@@ -33,10 +36,10 @@ $this->get_header(); ?>
 	</div>
 	<script>
 		jQuery(function ($) {
-			$("form").ajaxForm(function(data){
-				if(data.status){
-					modal_show("添加成功","<p class='text-success'>添加成功</p>");
-				}else{
+			$("form").ajaxForm(function (data) {
+				if (data.status) {
+					modal_show("添加成功", "<p class='text-success'>添加成功</p>");
+				} else {
 					alert(data.msg);
 				}
 			})

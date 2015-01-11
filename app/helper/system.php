@@ -118,3 +118,21 @@ function session_class(){
 	}
 	return $session;
 }
+
+/**
+ * 获取QueryList对象实例
+ * @return \ULib\QueryList
+ */
+function query_class(){
+	static $query = NULL;
+	if($query !== NULL){
+		return $query;
+	}
+	$lib = lib();
+	$query = $lib->using('UQueryList');
+	if($query === false){
+		$lib->load('QueryList')->add("UQueryList", new \ULib\QueryList());
+		$query = $lib->using("UQueryList");
+	}
+	return $query;
+}

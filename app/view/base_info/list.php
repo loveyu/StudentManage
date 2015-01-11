@@ -3,6 +3,7 @@
  * @var $this \UView\BaseInfo
  * @var $__info array
  * @var $__type string
+ * @var $__query \ULib\QueryList
  */
 $this->get_header();?>
 	<h3><?php echo $__info['name']?>
