@@ -196,5 +196,39 @@ function get_campus_info(){
  * @return bool
  */
 function check_campus_info($name){
-	return db_class()->check_campus_check($name);
+	return db_class()->check_campus_name($name);
+}
+
+function get_college_info(){
+	$db = db_class();
+	$rt = [];
+	foreach(list2keymap($db->get_college_simple_list(), 'ico_id', [
+		'ico_name',
+		'ic_name',
+	]) as $name => $v){
+		$rt[$name] = htmlspecialchars(implode(" - ", $v));
+	}
+	return $rt;
+}
+
+/**
+ * 如果存在返回True
+ * @param $id
+ * @return bool
+ */
+function check_college_info($id){
+	return db_class()->check_college_id($id);
+}
+
+function ref_college_set($name){
+	if(!isset($GLOBALS['REF_LIST']) || !is_array($GLOBALS['REF_LIST'])){
+		$GLOBALS['REF_LIST'] = [];
+	}
+	$GLOBALS['REF_LIST'][$name] = '';
+}
+
+function ref_college_get(){
+	$list = list2keymap(db_class()->get_college_names(array_keys($GLOBALS['REF_LIST'])), "ico_id", "ico_name");
+	unset($GLOBALS['REF_LIST']);
+	return $list;
 }

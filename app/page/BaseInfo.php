@@ -43,6 +43,46 @@ class BaseInfo extends Page{
 				],
 			]
 		],
+
+		'discipline_info' => [
+			'name' => '专业信息',
+			'table' => 'info_discipline',
+			'index' => 'id_id',
+			'filed' => [
+				'id_id' => [
+					'name' => '编号',
+					'type' => 'text',
+					'vt' => 'text',
+					'rule' => '/^[0-9]{3,10}$/',
+				],
+				'id_name' => [
+					'name' => '名称',
+					'type' => 'text',
+					'vt' => 'text',
+					'check' => ['not_empty']
+				],
+				'id_teacher' => [
+					'name' => '系主任',
+					'type' => 'text',
+					'vt' => 'text',
+					'check' => ['not_empty']
+				],
+				'id_time' => [
+					'name' => '入学年份',
+					'type' => 'text',
+					'rule' => '/^[0-9]{4}$/',
+					'check' => ['not_empty']
+				],
+				'ico_id' => [
+					'name' => '学院',
+					'type' => 'select',
+					'check_func' => 'check_college_info',
+					'select_func' => 'get_college_info',
+					'ref_set'=>'ref_college_set',
+					'ref_get'=>'ref_college_get',
+				],
+			]
+		],
 		'college_info' => [
 			'name' => '学院信息',
 			'table' => 'info_college',

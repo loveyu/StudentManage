@@ -162,6 +162,7 @@ SQL;
 		return false;
 	}
 
+
 	public function base_info_insert($table, $info){
 		return $this->driver->insert($table, $info);
 	}
@@ -170,8 +171,27 @@ SQL;
 		return $this->driver->select('info_campus', "*");
 	}
 
-	public function check_campus_check($name){
+	public function get_college_simple_list(){
+		return $this->driver->select('info_college', [
+			'ico_id',
+			'ico_name',
+			'ic_name'
+		]);
+	}
+
+	public function check_campus_name($name){
 		return $this->driver->has('info_campus', ['ic_name' => $name]);
+	}
+
+	public function check_college_id($id){
+		return $this->driver->has('info_college', ['ico_id' => $id]);
+	}
+
+	public function get_college_names($ids){
+		return $this->driver->select("info_college", [
+			'ico_id',
+			'ico_name'
+		], ['ico_id' => $ids]);
 	}
 
 	public function get_role_info($id){

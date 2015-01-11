@@ -7,7 +7,8 @@
  */
 $this->get_header(); ?>
 	<h3><?php echo $__info['name'] ?>
-		<a class="btn btn-primary btn-sm" href="<?php echo get_url('BaseInfo', 'op', $__type, "add") ?>">添加</a>
+		<?php if(access_class()->write($__type)): ?><a class="btn btn-primary btn-sm" href="<?php echo get_url('BaseInfo', 'op', $__type, "add") ?>">
+				添加</a><?php endif; ?>
 	</h3>
 <?php
 if(!$__query->has_data()):

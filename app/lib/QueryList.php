@@ -20,6 +20,7 @@ class QueryList{
 	private $filed = [];
 	private $data = [];
 	private $where = [];
+	private $data_call = [];
 
 	function __construct(){
 		$req = req();
@@ -123,6 +124,12 @@ class QueryList{
 		$this->table = $info['info']['table'];
 		foreach($info['info']['filed'] as $name => $v){
 			$this->filed[$name] = $v['name'];
+			if(isset($v['ref_set']) && isset($v['ref_get'])){
+				$this->data_call[$name] = [
+					'set' => $v['ref_set'],
+					'get' => $v['ref_get']
+				];
+			}
 		}
 		$this->get_list();
 	}
@@ -134,7 +141,19 @@ class QueryList{
 			$p['ORDER'] = $this->order_by . " " . $this->sort;
 		}
 		$where = array_merge($this->where, $p);
-		$this->data = $db->select($this->table, array_keys($this->filed), $where);
+		$data = $db->select($this->table, array_keys($this->filed), $where);
+		foreach($this->data_call as $name => $v){
+			for($i = 0; $i < count($data); $i++){
+				call_user_func($v['set'], $data[$i][$name]);
+			}
+			$list = call_user_func($v['get']);
+			for($i = 0; $i < count($data); $i++){
+				if(isset($list[$data[$i][$name]])){
+					$data[$i][$name] = $list[$data[$i][$name]];
+				}
+			}
+		}
+		$this->data = $data;
 	}
 
 	private function getLimit(){
