@@ -193,6 +193,12 @@ SQL;
 			'ico_name'
 		], ['ico_id' => $ids]);
 	}
+	public function get_discipline_names($ids){
+		return $this->driver->select("info_discipline", [
+			'id_id',
+			'id_name'
+		], ['id_id' => $ids]);
+	}
 
 	public function get_role_info($id){
 		return $this->driver->get("role", "*", ['r_id' => $id]);

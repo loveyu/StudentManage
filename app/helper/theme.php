@@ -228,7 +228,30 @@ function ref_college_set($name){
 }
 
 function ref_college_get(){
+	if(!isset($GLOBALS['REF_LIST'])){
+		return [];
+	}
 	$list = list2keymap(db_class()->get_college_names(array_keys($GLOBALS['REF_LIST'])), "ico_id", "ico_name");
 	unset($GLOBALS['REF_LIST']);
 	return $list;
+}
+
+function ref_discipline_set($name){
+	if(!isset($GLOBALS['REF_LIST']) || !is_array($GLOBALS['REF_LIST'])){
+		$GLOBALS['REF_LIST'] = [];
+	}
+	$GLOBALS['REF_LIST'][$name] = '';
+}
+
+function ref_discipline_get(){
+	if(!isset($GLOBALS['REF_LIST'])){
+		return [];
+	}
+	$list = list2keymap(db_class()->get_discipline_names(array_keys($GLOBALS['REF_LIST'])), "id_id", "id_name");
+	unset($GLOBALS['REF_LIST']);
+	return $list;
+}
+
+function textarea_out($name){
+	return implode("<br>", array_map('htmlspecialchars', explode("\n", $name)));
 }

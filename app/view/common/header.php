@@ -17,6 +17,9 @@ header("Content-Type: text/html; charset=utf-8");
 	<script type="text/javascript" src="<?php echo $this->get_asset("js/jquery.form.js") ?>"></script>
 	<script type="text/javascript" src="<?php echo $this->get_asset('js/js.js'); ?>"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<script>
+		var BASE_URL = <?php echo json_encode(get_url(''))?>;
+	</script>
 </head>
 <body class="my-body">
 <div class="container-fluid">

@@ -21,8 +21,13 @@ else:
 	echo "</tr></thead><tbody>";
 	foreach($__query->getData() as $v){
 		echo "<tr>";
-		foreach($v as $value){
-			echo "<td>{$value}</td>";
+		foreach($v as $name => $value){
+			if(isset($__info['filed'][$name]['out_call'])){
+				echo "<td>" . $__info['filed'][$name]['out_call']($value) . "</td>";
+			} else{
+				echo "<td>{$value}</td>";
+			}
+
 		}
 		echo "</tr>";
 	}

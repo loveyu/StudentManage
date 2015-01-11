@@ -11,117 +11,13 @@ namespace UView;
 use ULib\Page;
 
 class BaseInfo extends Page{
-	private $info_data = [
-		'campus_info' => [
-			'name' => '校园信息',
-			'table' => 'info_campus',
-			'index' => 'ic_name',
-			'filed' => [
-				'ic_name' => [
-					'name' => '名称',
-					'type' => 'text',
-					'vt' => 'text',
-					'check' => ['not_empty']
-				],
-				'ic_address' => [
-					'name' => '地址',
-					'type' => 'text',
-					'vt' => 'text',
-					'check' => ['not_empty']
-				],
-				'ic_postcode' => [
-					'name' => '邮编',
-					'type' => 'text',
-					'vt' => 'number',
-					'rule' => '/^[0-9]{3,10}$/'
-				],
-				'ic_tel' => [
-					'name' => '电话',
-					'type' => 'text',
-					'vt' => 'number',
-					'rule' => '/^[0-9]{5,10}$/'
-				],
-			]
-		],
+	private $info_data = [];
 
-		'discipline_info' => [
-			'name' => '专业信息',
-			'table' => 'info_discipline',
-			'index' => 'id_id',
-			'filed' => [
-				'id_id' => [
-					'name' => '编号',
-					'type' => 'text',
-					'vt' => 'text',
-					'rule' => '/^[0-9]{3,10}$/',
-				],
-				'id_name' => [
-					'name' => '名称',
-					'type' => 'text',
-					'vt' => 'text',
-					'check' => ['not_empty']
-				],
-				'id_teacher' => [
-					'name' => '系主任',
-					'type' => 'text',
-					'vt' => 'text',
-					'check' => ['not_empty']
-				],
-				'id_time' => [
-					'name' => '入学年份',
-					'type' => 'text',
-					'rule' => '/^[0-9]{4}$/',
-					'check' => ['not_empty']
-				],
-				'ico_id' => [
-					'name' => '学院',
-					'type' => 'select',
-					'check_func' => 'check_college_info',
-					'select_func' => 'get_college_info',
-					'ref_set'=>'ref_college_set',
-					'ref_get'=>'ref_college_get',
-				],
-			]
-		],
-		'college_info' => [
-			'name' => '学院信息',
-			'table' => 'info_college',
-			'index' => 'ico_id',
-			'filed' => [
-				'ico_id' => [
-					'name' => '编号',
-					'type' => 'text',
-					'vt' => 'text',
-					'rule' => '/^[0-9]{3,10}$/',
-					'check' => ['not_empty']
-				],
-				'ico_name' => [
-					'name' => '名称',
-					'type' => 'text',
-					'vt' => 'text',
-					'check' => ['not_empty']
-				],
-				'ic_name' => [
-					'name' => '校区',
-					'type' => 'select',
-					'check_func' => 'check_campus_info',
-					'select_func' => 'get_campus_info'
-				],
-				'ico_teacher' => [
-					'name' => '主要负责人',
-					'type' => 'text',
-					'vt' => 'text',
-					'check' => ['not_empty']
-				],
-				'ico_tel' => [
-					'name' => '电话',
-					'type' => 'text',
-					'vt' => 'number',
-					'rule' => '/^[0-9]{5,10}$/'
-				],
-			]
-		]
-	];
+	function __construct(){
+		parent::__construct();
+		$this->info_data = cfg()->load(_RootPath_ . "/config/base_info.php");
+	}
+
 
 	public function op($type = NULL, $action = 'list'){
 		if(!isset($this->info_data[$type])){
@@ -169,6 +65,32 @@ class BaseInfo extends Page{
 		}
 	}
 
+	public function ajax($type = ''){
+		header("Content-Type: application/json; charset=utf-8");
+		$db = db_class()->getDriver();
+		$id = $this->__req->get('id');
+		$t = $this->__req->get('t');
+		switch($type){
+			case "college_select_year":
+				echo json_encode(array_keys(list2keymap($db->select("info_discipline", ["id_time"], [
+					'ico_id' => $id,
+					'GROUP' => 'ico_id'
+				]), 'id_time', 'id_time')));
+				break;
+			case "c_and_y_select_id":
+				echo json_encode(list2keymap($db->select("info_discipline", [
+					"id_id",
+					"id_name"
+				], [
+					'AND' => [
+						'ico_id' => $id,
+						'id_time' => $t,
+					]
+				]), 'id_id', 'id_name'));
+				break;
+		}
+	}
+
 	public function add($type = NULL){
 		if(!isset($this->info_data[$type])){
 			$this->__load_404();
@@ -187,7 +109,12 @@ class BaseInfo extends Page{
 			'msg' => NULL
 		];
 		$flag = false;
+		$flag_filed = "";
 		foreach($this->info_data[$type]['filed'] as $name => $v){
+			if(isset($v['hide']) && $v['hide']){
+				continue;
+			}
+			$flag_filed = $v['name'];
 			$info[$name] = trim($this->__req->post($name));
 			$flag = false;
 			if(isset($v['rule'])){
@@ -210,6 +137,16 @@ class BaseInfo extends Page{
 								$flag = true;
 							}
 							break;
+						case 'is_number':
+							if(!is_numeric($info[$name])){
+								$flag = true;
+							}
+							break;
+						case 'is_email':
+							if(!filter_var($info[$name], FILTER_VALIDATE_EMAIL)){
+								$flag = true;
+							}
+							break;
 					}
 					if($flag){
 						break;
@@ -221,7 +158,7 @@ class BaseInfo extends Page{
 			}
 		}
 		if($flag){
-			$rt['msg'] = '信息检测出错';
+			$rt['msg'] = '信息检测出错:' . $flag_filed;
 		}
 		if(empty($rt['msg'])){
 			$i = db_class()->base_info_insert($this->info_data[$type]['table'], $info);
