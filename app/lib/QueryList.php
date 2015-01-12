@@ -170,7 +170,12 @@ class QueryList{
 		$rt = "";
 		if($this->all_page > 1){
 			$s = "";
+			$last = NULL;
 			foreach($this->get_nav_list() as $v){
+				if($last!==NULL && $last!=($v-1)){
+					$s.="<li class=\"disabled\"><a href='#'> ...</a></li>";
+				}
+				$last = $v;
 				$c = $v == $this->p ? " class=\"active\"" : "";
 				$s .= "<li{$c}><a href=\"" . $this->build_url($v) . "\">{$v}</a></li>";
 			}
@@ -192,6 +197,9 @@ HTML;
 		$rt[] = 1;
 		for($i = (($this->p > ($i + 5)) ? ($this->p - 5) : 2); $i <= $this->p + 5 && $i <= $this->all_page; $i++){
 			$rt[] = $i;
+		}
+		if(!in_array($this->all_page,$rt)){
+			$rt[] = $this->all_page;
 		}
 		return $rt;
 	}

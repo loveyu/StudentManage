@@ -2,3 +2,4 @@
 .idea/*
 app/cache/out/*/
 app/log/*.log
+test

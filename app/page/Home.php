@@ -9,24 +9,6 @@ class Home extends Page{
 		parent::__construct();
 	}
 
-	public function test(){
-		header("Content-Type: text/plain; charset=utf-8");
-		$content = file_get_contents("https://gist.githubusercontent.com/denzeljiang/5ae88a5ebb261570aad7/raw/87b8bf86ecbcae18565a1c73286f643e454d90e8/Districts_in_China");
-		$s = json_decode($content, true);
-		$obj = [];
-		foreach($s as $v){
-			foreach($v as $x){
-				$obj[$x['name']] = [];
-				if(isset($x['city']) && is_array($x['city'])){
-					foreach($x['city'] as $xx){
-						$obj[$x['name']][] = $xx['name'];
-					}
-				}
-			}
-		}
-		echo json_encode($obj,JSON_UNESCAPED_UNICODE);
-	}
-
 	/**
 	 * Home page
 	 */

@@ -74,7 +74,7 @@ class BaseInfo extends Page{
 			case "college_select_year":
 				echo json_encode(array_keys(list2keymap($db->select("info_discipline", ["id_time"], [
 					'ico_id' => $id,
-					'GROUP' => 'ico_id'
+					'GROUP' => 'id_time'
 				]), 'id_time', 'id_time')));
 				break;
 			case "c_and_y_select_id":

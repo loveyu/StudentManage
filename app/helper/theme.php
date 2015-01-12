@@ -236,6 +236,18 @@ function ref_college_get(){
 	return $list;
 }
 
+function ref_college_get_and_campus(){
+	if(!isset($GLOBALS['REF_LIST'])){
+		return [];
+	}
+	$list = list2keymap(db_class()->get_college_names_and_campus(array_keys($GLOBALS['REF_LIST'])), "ico_id", [
+		"ico_name",
+		"ic_name"
+	]);
+	unset($GLOBALS['REF_LIST']);
+	return $list;
+}
+
 function ref_discipline_set($name){
 	if(!isset($GLOBALS['REF_LIST']) || !is_array($GLOBALS['REF_LIST'])){
 		$GLOBALS['REF_LIST'] = [];
@@ -267,6 +279,7 @@ function ref_teacher_get(){
 	unset($GLOBALS['REF_LIST']);
 	return $list;
 }
+
 function ref_curriculum_set($name){
 	if(!isset($GLOBALS['REF_LIST']) || !is_array($GLOBALS['REF_LIST'])){
 		$GLOBALS['REF_LIST'] = [];
@@ -285,4 +298,11 @@ function ref_curriculum_get(){
 
 function textarea_out($name){
 	return implode("<br>", array_map('htmlspecialchars', explode("\n", $name)));
+}
+
+function implode_out($name){
+	if(!is_array($name)){
+		return $name;
+	}
+	return implode(" - ", $name);
 }

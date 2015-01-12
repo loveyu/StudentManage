@@ -65,7 +65,8 @@ return [
 				'check_func' => 'check_college_info',
 				'select_func' => 'get_college_info',
 				'ref_set' => 'ref_college_set',
-				'ref_get' => 'ref_college_get',
+				'ref_get' => 'ref_college_get_and_campus',
+				'out_call' => 'implode_out'
 			],
 		]
 	],

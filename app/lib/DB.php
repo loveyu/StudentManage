@@ -194,6 +194,14 @@ SQL;
 		], ['ico_id' => $ids]);
 	}
 
+	public function get_college_names_and_campus($ids){
+		return $this->driver->select("info_college", ['[>]info_campus' => ['ic_name' => 'ic_name']], [
+			'info_college.ico_id',
+			'info_college.ico_name',
+			'info_campus.ic_name',
+		], ['ico_id' => $ids]);
+	}
+
 	public function get_discipline_names($ids){
 		return $this->driver->select("info_discipline", [
 			'id_id',
