@@ -100,6 +100,12 @@ class BaseInfo extends Page{
 					'icl_number'
 				], ['id_id' => $id]), "icl_id", 'icl_number'));
 				break;
+			case "college_curriculum":
+				echo json_encode(list2keymap($db->select("info_curriculum", [
+					"cu_id",
+					'cu_name'
+				], ['ico_id' => $id]), "cu_id", 'cu_name'));
+				break;
 		}
 	}
 

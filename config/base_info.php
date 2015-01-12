@@ -3,7 +3,6 @@ return [
 	'campus_info' => [
 		'name' => '校园信息',
 		'table' => 'info_campus',
-		'index' => 'ic_name',
 		'filed' => [
 			'ic_name' => [
 				'name' => '名称',
@@ -35,7 +34,6 @@ return [
 	'discipline_info' => [
 		'name' => '专业信息',
 		'table' => 'info_discipline',
-		'index' => 'id_id',
 		'filed' => [
 			'id_id' => [
 				'name' => '编号',
@@ -74,7 +72,6 @@ return [
 	'curriculum_info' => [
 		'name' => '课程信息',
 		'table' => 'info_curriculum',
-		'index' => 'cu_id',
 		'filed' => [
 			'cu_id' => [
 				'name' => '编号',
@@ -132,7 +129,6 @@ return [
 	'college_info' => [
 		'name' => '学院信息',
 		'table' => 'info_college',
-		'index' => 'ico_id',
 		'filed' => [
 			'ico_id' => [
 				'name' => '编号',
@@ -170,7 +166,6 @@ return [
 	'class_info' => [
 		'name' => '班级信息',
 		'table' => 'info_class',
-		'index' => 'icl_id',
 		'ajax' => 'class_info',
 		'filed' => [
 			'icl_id' => [
@@ -221,7 +216,6 @@ return [
 	'teacher_info' => [
 		'name' => '教师信息',
 		'table' => 'info_teacher',
-		'index' => 'it_id',
 		'filed' => [
 			'it_id' => [
 				'name' => '编号',
@@ -323,12 +317,11 @@ return [
 	'student_info' => [
 		'name' => '学生信息',
 		'table' => 'info_student',
-		'index' => 'is_id',
 		'ajax' => [
 			'student_info',
 			'city'
 		],
-		'list_style'=>'width:2000px',
+		'list_style' => 'width:2000px',
 		'row' => 4,
 		'filed' => [
 			'is_id' => [
@@ -463,6 +456,69 @@ return [
 				'vt' => 'date',
 				'check' => ['is_date']
 			],
+		]
+	],
+	'curriculum_m' => [
+		'name' => '课程安排',
+		'table' => 'mg_curriculum',
+		'ajax' => 'curriculum_m',
+		'filed' => [
+			'mc_id' => [
+				'name' => '编号',
+				'type' => 'text',
+				'vt' => 'text',
+				'hide' => 1,
+				'rule' => '/^[0-9]{3,10}$/',
+				'check' => ['not_empty']
+			],
+
+			'it_id' => [
+				'name' => '教师ID',
+				'type' => 'text',
+				'rule' => '/^[1-9]{1}[0-9]*$/',
+				'ref_set' => 'ref_teacher_set',
+				'ref_get' => 'ref_teacher_get',
+			],
+			'mc_year' => [
+				'name' => '学年',
+				'type' => 'text',
+				'vt' => 'text',
+				'def' => date("Y"),
+				'rule' => '/^20[0-9]{2}$/',
+			],
+			'mc_number' => [
+				'name' => '学期',
+				'type' => 'select',
+				'select_list' => [
+					1 => 1,
+					2 => 2,
+					3 => 3,
+					4 => 4
+				],
+				'rule' => '/^[1-4]{1}$/',
+			],
+			'ico_id' => [
+				'name' => '学院',
+				'type' => 'select',
+				'check_func' => 'check_college_info',
+				'select_func' => 'get_college_info',
+				'ref_set' => 'ref_college_set',
+				'ref_get' => 'ref_college_get',
+			],
+			'mc_grade' => [
+				'name' => '年级',
+				'type' => 'select',
+			],
+			'id_id' => [
+				'name' => '专业',
+				'type' => 'select',
+				'ref_set' => 'ref_discipline_set',
+				'ref_get' => 'ref_discipline_get',
+			],
+			'icu_id' => [
+				'name' => '课程',
+				'type' => 'select',
+			]
 		]
 	]
 ];

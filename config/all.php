@@ -135,7 +135,7 @@ return [
 				'Home',
 				'logout'
 			],
-			'name' => '退出登录'
+			'name' => '<span class="btn btn-danger">退出登录</span>'
 		]
 	]
 ];

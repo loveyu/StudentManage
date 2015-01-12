@@ -193,11 +193,19 @@ SQL;
 			'ico_name'
 		], ['ico_id' => $ids]);
 	}
+
 	public function get_discipline_names($ids){
 		return $this->driver->select("info_discipline", [
 			'id_id',
 			'id_name'
 		], ['id_id' => $ids]);
+	}
+
+	public function get_teacher_names($ids){
+		return $this->driver->select("info_teacher", [
+			'it_id',
+			'it_name'
+		], ['it_id' => $ids]);
 	}
 
 	public function get_role_info($id){
