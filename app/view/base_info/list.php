@@ -15,13 +15,19 @@ if(!$__query->has_data()):
 	echo "<h4 class='bg-danger not_found'>数据未找到</h4>";
 else:
 	echo "<table class='table table-striped  table-hover'><thead><tr>";
-	foreach($__query->getFiled() as $v){
+	foreach($__query->getFiled() as $name=> $v){
+		if(isset($__info['filed'][$name]['no_out'])){
+			continue;
+		}
 		echo "<th>{$v}</th>";
 	}
 	echo "</tr></thead><tbody>";
 	foreach($__query->getData() as $v){
 		echo "<tr>";
 		foreach($v as $name => $value){
+			if(isset($__info['filed'][$name]['no_out'])){
+				continue;
+			}
 			if(isset($__info['filed'][$name]['out_call'])){
 				echo "<td>" . $__info['filed'][$name]['out_call']($value) . "</td>";
 			} else{

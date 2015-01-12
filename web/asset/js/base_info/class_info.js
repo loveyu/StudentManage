@@ -19,7 +19,6 @@ jQuery(function ($) {
 		if (x == "")return;
 		id_s.find(".x").remove();
 		$.get(BASE_URL + "BaseInfo/ajax/c_and_y_select_id", {id: c_s.val(), t: x}, function (data) {
-			console.log(data);
 			$.each(data, function (index, value) {
 				id_s.append("<option value='" + index + "' class='x'>" + value + "</option>");
 			});

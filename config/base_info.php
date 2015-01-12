@@ -27,7 +27,7 @@ return [
 				'name' => '电话',
 				'type' => 'text',
 				'vt' => 'number',
-				'rule' => '/^[0-9]{5,10}$/'
+				'check' => ['is_tel']
 			],
 		]
 	],
@@ -163,7 +163,7 @@ return [
 				'name' => '电话',
 				'type' => 'text',
 				'vt' => 'number',
-				'rule' => '/^[0-9]{5,10}$/'
+				'check' => ['is_tel']
 			],
 		]
 	],
@@ -288,13 +288,13 @@ return [
 				'name' => '电话',
 				'type' => 'text',
 				'vt' => 'number',
-				'rule' => '/^[0-9]{5,10}$/'
+				'check' => ['is_tel']
 			],
 			'it_email' => [
 				'name' => '邮箱',
 				'type' => 'text',
 				'vt' => 'text',
-				'check' =>[ 'is_email']
+				'check' => ['is_email']
 			],
 			'it_address' => [
 				'name' => '地址',
@@ -311,11 +311,148 @@ return [
 				'name' => '登录密码',
 				'type' => 'text',
 				'vt' => 'password',
+				'no_out' => 1
 			],
 			'it_note' => [
 				'name' => '备注',
 				'type' => 'textarea',
 				'out_call' => 'textarea_out'
+			],
+		]
+	],
+	'student_info' => [
+		'name' => '学生信息',
+		'table' => 'info_student',
+		'index' => 'is_id',
+		'ajax' => 'student_info',
+		'filed' => [
+			'is_id' => [
+				'name' => '学号',
+				'type' => 'text',
+				'vt' => 'text',
+				'rule' => '/^[1-9]{1}[0-9]{9}$/',
+			],
+			'is_name' => [
+				'name' => '姓名',
+				'type' => 'text',
+				'vt' => 'text',
+				'check' => ['not_empty']
+			],
+			'is_sex' => [
+				'name' => '性别',
+				'type' => 'radio',
+				'radio' => [
+					'男' => '男',
+					'女' => '女'
+				]
+			],
+			'is_birthday' => [
+				'name' => '生日',
+				'type' => 'text',
+				'vt' => 'date',
+				'check' => ['is_date']
+			],
+			'is_province' => [
+				'name' => '省份',
+				'type' => 'text',
+				'vt' => 'text',
+			],
+			'is_city' => [
+				'name' => '市',
+				'type' => 'text',
+				'vt' => 'text',
+			],
+			'is_county' => [
+				'name' => '县',
+				'type' => 'text',
+				'vt' => 'text',
+			],
+			'is_zone' => [
+				'name' => '区',
+				'type' => 'text',
+				'vt' => 'text',
+			],
+			'is_address' => [
+				'name' => '详细地址',
+				'type' => 'text',
+				'vt' => 'text',
+			],
+			'is_id_card' => [
+				'name' => '身份证',
+				'type' => 'text',
+				'vt' => 'text',
+				'rule' => '/^[1-9]{1}[0-9]{17}$/',
+
+			],
+			'is_politics' => [
+				'name' => '政治面貌',
+				'type' => 'select',
+				'select_list' => [
+					'群众' => '群众',
+					'党员' => '党员',
+					'中共团员' => '中共团员',
+					'预备党员' => '预备党员'
+				]
+			],
+			'ic_name' => [
+				'name' => '校区',
+				'type' => 'select',
+				'check_func' => 'check_campus_info',
+				'select_func' => 'get_campus_info'
+			],
+			'ico_id' => [
+				'name' => '学院',
+				'type' => 'select',
+				'check_func' => 'check_college_info',
+				'ref_set' => 'ref_college_set',
+				'ref_get' => 'ref_college_get',
+			],
+			'is_grade' => [
+				'name' => '年级',
+				'type' => 'select',
+			],
+			'id_id' => [
+				'name' => '专业',
+				'type' => 'select',
+				'ref_set' => 'ref_discipline_set',
+				'ref_get' => 'ref_discipline_get',
+			],
+			'icl_id' => [
+				'name' => '班级',
+				'type' => 'select'
+			],
+			'is_password' => [
+				'name' => '密码',
+				'type' => 'text',
+				'vt' => 'password',
+			],
+			'is_email' => [
+				'name' => '邮箱',
+				'type' => 'text',
+				'vt' => 'email',
+				'check' => ['is_email']
+			],
+			'is_tel' => [
+				'name' => '电话',
+				'type' => 'text',
+				'vt' => 'text',
+				'check' => ['is_tel']
+			],
+			'is_room' => [
+				'name' => '宿舍区',
+				'type' => 'text',
+				'vt' => 'text',
+			],
+			'is_room_number' => [
+				'name' => '宿舍号',
+				'type' => 'text',
+				'vt' => 'text',
+			],
+			'is_study_date' => [
+				'name' => '入学日期',
+				'type' => 'text',
+				'vt' => 'date',
+				'check' => ['is_date']
 			],
 		]
 	]

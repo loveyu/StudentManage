@@ -88,6 +88,18 @@ class BaseInfo extends Page{
 					]
 				]), 'id_id', 'id_name'));
 				break;
+			case "campus_select_college":
+				echo json_encode(list2keymap($db->select("info_college", [
+					"ico_id",
+					'ico_name'
+				], ['ic_name' => $id]), "ico_id", 'ico_name'));
+				break;
+			case "id_select_class":
+				echo json_encode(list2keymap($db->select("info_class", [
+					"icl_id",
+					'icl_number'
+				], ['id_id' => $id]), "icl_id", 'icl_number'));
+				break;
 		}
 	}
 
@@ -144,6 +156,16 @@ class BaseInfo extends Page{
 							break;
 						case 'is_email':
 							if(!filter_var($info[$name], FILTER_VALIDATE_EMAIL)){
+								$flag = true;
+							}
+							break;
+						case 'is_tel':
+							if(preg_match("/^[0-9]{5,20}$/", $info[$name]) != 1){
+								$flag = true;
+							}
+							break;
+						case 'is_date':
+							if($info[$name] != date("Y-m-d", strtotime($info[$name]))){
 								$flag = true;
 							}
 							break;

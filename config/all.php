@@ -105,6 +105,33 @@ return [
 		],
 		[
 			'url' => [
+				'BaseInfo',
+				'op',
+				'student_info'
+			],
+			'name' => '学生信息',
+			'access' => 'student_info'
+		],
+		[
+			'url' => [
+				'BaseInfo',
+				'op',
+				'curriculum_m'
+			],
+			'name' => '专业课程安排',
+			'access' => 'curriculum_m'
+		],
+		[
+			'url' => [
+				'BaseInfo',
+				'op',
+				'scores_add'
+			],
+			'name' => '成绩添加',
+			'access' => 'scores_add'
+		],
+		[
+			'url' => [
 				'Home',
 				'logout'
 			],
