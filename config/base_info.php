@@ -324,16 +324,27 @@ return [
 		'name' => '学生信息',
 		'table' => 'info_student',
 		'index' => 'is_id',
-		'ajax' => 'student_info',
+		'ajax' => [
+			'student_info',
+			'city'
+		],
+		'list_style'=>'width:2000px',
+		'row' => 4,
 		'filed' => [
 			'is_id' => [
 				'name' => '学号',
 				'type' => 'text',
 				'vt' => 'text',
-				'rule' => '/^[1-9]{1}[0-9]{9}$/',
+				'rule' => '/^[1-9]{1}[0-9]{8}$/',
 			],
 			'is_name' => [
 				'name' => '姓名',
+				'type' => 'text',
+				'vt' => 'text',
+				'check' => ['not_empty']
+			],
+			'is_hometown' => [
+				'name' => '籍贯',
 				'type' => 'text',
 				'vt' => 'text',
 				'check' => ['not_empty']
@@ -354,13 +365,11 @@ return [
 			],
 			'is_province' => [
 				'name' => '省份',
-				'type' => 'text',
-				'vt' => 'text',
+				'type' => 'select',
 			],
 			'is_city' => [
 				'name' => '市',
-				'type' => 'text',
-				'vt' => 'text',
+				'type' => 'select',
 			],
 			'is_county' => [
 				'name' => '县',

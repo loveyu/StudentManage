@@ -32,3 +32,4 @@ header("Content-Type: text/html; charset=utf-8");
 		</div>
 		<div class="col-md-10" id="RightContent">
 			<h1 class="title">学籍管理系统</h1>
+			<div id="MainContent">

@@ -14,8 +14,8 @@ $this->get_header(); ?>
 if(!$__query->has_data()):
 	echo "<h4 class='bg-danger not_found'>数据未找到</h4>";
 else:
-	echo "<table class='table table-striped  table-hover'><thead><tr>";
-	foreach($__query->getFiled() as $name=> $v){
+	echo "<table class='table table-striped  table-hover'" . (isset($__info['list_style']) ? " style=\"{$__info['list_style']}\"" : "") . "><thead><tr>";
+	foreach($__query->getFiled() as $name => $v){
 		if(isset($__info['filed'][$name]['no_out'])){
 			continue;
 		}

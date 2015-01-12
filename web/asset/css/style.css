@@ -1,12 +1,15 @@
-table.table tbody td{
+table.table tbody td {
 	vertical-align: middle;
 }
-.table-striped>tbody>tr:nth-child(odd){
+
+.table-striped > tbody > tr:nth-child(odd) {
 	background-color: rgba(249, 249, 249, 0.52);
 }
-.table-striped>tbody>tr:hover{
+
+.table-striped > tbody > tr:hover {
 	background-color: rgb(249, 249, 249);
 }
+
 /* 登陆页面 */
 .login-form {
 	width: 100%;
@@ -38,8 +41,9 @@ table.table tbody td{
 
 /* 主要框架 */
 .my-body {
-	background: url("../images/background.jpg") top center no-repeat #eee;
-	background-size: cover;
+	/*background: url("../images/background.jpg") top center #eee;*/
+	/*background-size: cover;*/
+	background-color: #f3f3f3;
 	min-width: 1000px;
 }
 
@@ -49,30 +53,38 @@ table.table tbody td{
 }
 
 #RightContent {
-	background: rgba(199, 199, 199, 0.49);
+	background: rgba(199, 199, 199, 0.20);
+
 }
-#RightContent .title{
+
+#MainContent {
+	max-width: 100%;
+	overflow: auto;
+}
+
+#RightContent .title {
 	color: #555;
 	text-shadow: #aaa 1px 1px;
 	text-align: center;
 }
 
-.user-info dd,.user-info dt{
+.user-info dd, .user-info dt {
 	padding-top: 15px;
 }
 
-.inner_form{
+.inner_form {
 	max-width: 400px;
 	margin: 0 auto;
 }
 
-h4.not_found{
-	padding: 10px 5px;
-}
-.padding10{
+h4.not_found {
 	padding: 10px 5px;
 }
 
-.add_form{
+.padding10 {
+	padding: 10px 5px;
+}
+
+.add_form {
 	max-width: 600px;
 }
