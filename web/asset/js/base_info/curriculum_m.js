@@ -5,11 +5,11 @@ jQuery(function ($) {
 	var ID_mc_grade = $("#ID_mc_grade");
 	var ID_id_id = $("#ID_id_id");
 	var ID_ico_id = $("#ID_ico_id");
-	var ID_icu_id = $("#ID_icu_id");
+	var ID_cu_id = $("#ID_cu_id");
 	ID_ico_id.change(function () {
 		ID_mc_grade.find(".x").remove();
 		ID_id_id.find(".x").remove();
-		ID_icu_id.find(".x").remove();
+		ID_cu_id.find(".x").remove();
 		var id = $(this).val();
 		$.get(BASE_URL + "BaseInfo/ajax/college_select_year", {id: id}, function (data) {
 			for (var i = 0; i < data.length; i++) {
@@ -18,7 +18,7 @@ jQuery(function ($) {
 		});
 		$.get(BASE_URL + "BaseInfo/ajax/college_curriculum", {id: id}, function (data) {
 			$.each(data, function (index, value) {
-				ID_icu_id.append("<option value='" + index + "' class='x'>" + value + "</option>");
+				ID_cu_id.append("<option value='" + index + "' class='x'>" + value + "</option>");
 			});
 		});
 

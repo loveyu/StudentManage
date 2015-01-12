@@ -208,6 +208,13 @@ SQL;
 		], ['it_id' => $ids]);
 	}
 
+	public function get_curriculum_names($ids){
+		return $this->driver->select("info_curriculum", [
+			'cu_id',
+			'cu_name'
+		], ['cu_id' => $ids]);
+	}
+
 	public function get_role_info($id){
 		return $this->driver->get("role", "*", ['r_id' => $id]);
 	}

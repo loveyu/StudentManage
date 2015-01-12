@@ -123,9 +123,8 @@ return [
 		],
 		[
 			'url' => [
-				'BaseInfo',
-				'op',
-				'scores_add'
+				'Scores',
+				'list',
 			],
 			'name' => '成绩添加',
 			'access' => 'scores_add'

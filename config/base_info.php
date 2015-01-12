@@ -515,9 +515,11 @@ return [
 				'ref_set' => 'ref_discipline_set',
 				'ref_get' => 'ref_discipline_get',
 			],
-			'icu_id' => [
+			'cu_id' => [
 				'name' => '课程',
 				'type' => 'select',
+				'ref_set' => 'ref_curriculum_set',
+				'ref_get' => 'ref_curriculum_get',
 			]
 		]
 	]

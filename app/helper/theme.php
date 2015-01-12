@@ -267,6 +267,21 @@ function ref_teacher_get(){
 	unset($GLOBALS['REF_LIST']);
 	return $list;
 }
+function ref_curriculum_set($name){
+	if(!isset($GLOBALS['REF_LIST']) || !is_array($GLOBALS['REF_LIST'])){
+		$GLOBALS['REF_LIST'] = [];
+	}
+	$GLOBALS['REF_LIST'][$name] = '';
+}
+
+function ref_curriculum_get(){
+	if(!isset($GLOBALS['REF_LIST'])){
+		return [];
+	}
+	$list = list2keymap(db_class()->get_curriculum_names(array_keys($GLOBALS['REF_LIST'])), "cu_id", "cu_name");
+	unset($GLOBALS['REF_LIST']);
+	return $list;
+}
 
 function textarea_out($name){
 	return implode("<br>", array_map('htmlspecialchars', explode("\n", $name)));
