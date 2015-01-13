@@ -146,7 +146,7 @@ class QueryList{
 				if(isset($_GET[$n]) && $_GET[$n] !== ""){
 					if(isset($v['like']) && $v['like']){
 						if(!isset($search['LIKE'])){
-							$search['LIKE'] =[];
+							$search['LIKE'] = [];
 						}
 						$search['LIKE'][$n] = $req->get($n);
 					} else{
@@ -209,9 +209,20 @@ class QueryList{
 				$c = $v == $this->p ? " class=\"active\"" : "";
 				$s .= "<li{$c}><a href=\"" . $this->build_url($v) . "\">{$v}</a></li>";
 			}
+			$pg_nvm = html_option([
+				10 => 10,
+				20 => 20,
+				50 => 50,
+				80 => 80,
+				120 => 120,
+			], $this->getN());
 			$rt .= <<<HTML
 <nav>
-  <ul class="pagination">{$s}</ul>
+  <ul class="pagination">
+  <li class="disabled"><a href="#">共{$this->number_all}</a></li>
+  {$s}
+  <li class="disabled"><a href="#" onclick="return false;"><select id="PageNavChange">$pg_nvm</select>/页</a></li>
+  </ul>
 </nav>
 HTML;
 		}
@@ -221,6 +232,7 @@ HTML;
 	private function build_url($i){
 		$list = $this->search;
 		$list['p'] = $i;
+		$list['n'] = $this->n;
 		$rt = [];
 		foreach($list as $n => $v){
 			$rt[] = $n . "=" . urlencode($v);

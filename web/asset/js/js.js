@@ -29,11 +29,20 @@ function size_change() {
 	var height = $(window).height();
 	$("#RightContent").css("min-height", height + "px");
 	$("#LeftMenu").css("min-height", height + "px");
-	if($("#RightContent").height()>height){
+	if ($("#RightContent").height() > height) {
 		$("#LeftMenu").height($("#RightContent").height());
 	}
 }
 jQuery(function ($) {
 	size_change();
 	$(window).resize(size_change);
+	$("#PageNavChange").change(function () {
+		var v = $(this).val();
+		var href = location.href;
+		if (href.indexOf('?') > 0) {
+			location.href = href + "&n=" + v;
+		} else {
+			location.href = href + "?n=" + v;
+		}
+	});
 });
