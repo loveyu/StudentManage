@@ -79,7 +79,11 @@ else:
 				continue;
 			}
 			if(isset($__info['filed'][$name]['pk'])){
-				$pks[$i][$name] = $value;
+				if(preg_match("/^\\[([0-9]+?)\\]/", $value, $ms) == 1){
+					$pks[$i][$name] = $ms[1];
+				} else{
+					$pks[$i][$name] = $value;
+				}
 			}
 			if(isset($__info['filed'][$name]['out_call'])){
 				echo "<td>" . $__info['filed'][$name]['out_call']($value) . "</td>";
@@ -112,7 +116,7 @@ endif; ?>
 		function edit(n) {
 			var url = "<?php echo get_url("BaseInfo",'op',$__type,"edit")?>?";
 			$.each(obj_info[n], function (index, value) {
-				url += index + "=" + encodeURI(value);
+				url += '&' + index + "=" + encodeURI(value);
 			});
 			location.href = url;
 			return false;

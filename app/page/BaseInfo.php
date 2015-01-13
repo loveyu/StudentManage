@@ -228,11 +228,15 @@ class BaseInfo extends Page{
 			$rt['msg'] = '信息检测出错:' . $filed_check;
 		}
 		if(empty($rt['msg'])){
-			$i = db_class()->base_info_insert($this->info_data[$type]['table'], $info);
-			if($i >= 0){
-				$rt['status'] = true;
+			if(isset($this->info_data[$type]['full_check']) && !$this->info_data[$type]['full_check']($info)){
+				$rt['msg'] = "无法通过完整性约束检查";
 			} else{
-				$rt['msg'] = "添加数据失败";
+				$i = db_class()->base_info_insert($this->info_data[$type]['table'], $info);
+				if($i >= 0){
+					$rt['status'] = true;
+				} else{
+					$rt['msg'] = "添加数据失败";
+				}
 			}
 		}
 		echo json_encode($rt);

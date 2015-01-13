@@ -123,11 +123,12 @@ return [
 		],
 		[
 			'url' => [
-				'Scores',
-				'list',
+				'BaseInfo',
+				'op',
+				'scores_mg'
 			],
-			'name' => '成绩添加',
-			'access' => 'scores_add'
+			'name' => '选课管理',
+			'access' => 'scores_mg'
 		],
 		[
 			'url' => [

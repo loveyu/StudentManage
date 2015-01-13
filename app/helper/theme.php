@@ -183,7 +183,9 @@ function list2keymap($list, $key, $value){
 		}
 	}
 	return $rt;
-}/**
+}
+
+/**
  * 将数据列表转为KeyMap，保留键名
  * @param array        $list
  * @param string|array $value
@@ -195,14 +197,14 @@ function list2keymapSK($list, $value){
 	}
 	$rt = [];
 	if(is_array($value)){
-		foreach($list as $key=> $v){
+		foreach($list as $key => $v){
 			$rt[$key] = [];
 			foreach($value as $v2){
 				$rt[$key][$v2] = $v[$v2];
 			}
 		}
 	} else{
-		foreach($list as $key=> $v){
+		foreach($list as $key => $v){
 			$rt[$key] = $v[$value];
 		}
 	}
@@ -244,7 +246,7 @@ function check_college_info($id){
 	return db_class()->check_college_id($id);
 }
 
-function ref_college_set($name){
+function ref_list_set($name){
 	if(!isset($GLOBALS['REF_LIST']) || !is_array($GLOBALS['REF_LIST'])){
 		$GLOBALS['REF_LIST'] = [];
 	}
@@ -256,6 +258,24 @@ function ref_college_get(){
 		return [];
 	}
 	$list = list2keymap(db_class()->get_college_names(array_keys($GLOBALS['REF_LIST'])), "ico_id", "ico_name");
+	unset($GLOBALS['REF_LIST']);
+	return $list;
+}
+
+function ref_curr_id_by_mc_id_get(){
+	if(!isset($GLOBALS['REF_LIST'])){
+		return [];
+	}
+	$list = list2keymap(db_class()->get_curriculum_names_by_mc_id(array_keys($GLOBALS['REF_LIST'])), "mc_id", "cu_name");
+	unset($GLOBALS['REF_LIST']);
+	return $list;
+}
+
+function ref_student_name_get(){
+	if(!isset($GLOBALS['REF_LIST'])){
+		return [];
+	}
+	$list = list2keymap(db_class()->get_student_names(array_keys($GLOBALS['REF_LIST'])), "is_id", "is_name");
 	unset($GLOBALS['REF_LIST']);
 	return $list;
 }
@@ -272,12 +292,6 @@ function ref_college_get_and_campus(){
 	return $list;
 }
 
-function ref_discipline_set($name){
-	if(!isset($GLOBALS['REF_LIST']) || !is_array($GLOBALS['REF_LIST'])){
-		$GLOBALS['REF_LIST'] = [];
-	}
-	$GLOBALS['REF_LIST'][$name] = '';
-}
 
 function ref_discipline_get(){
 	if(!isset($GLOBALS['REF_LIST'])){
@@ -286,13 +300,6 @@ function ref_discipline_get(){
 	$list = list2keymap(db_class()->get_discipline_names(array_keys($GLOBALS['REF_LIST'])), "id_id", "id_name");
 	unset($GLOBALS['REF_LIST']);
 	return $list;
-}
-
-function ref_teacher_set($name){
-	if(!isset($GLOBALS['REF_LIST']) || !is_array($GLOBALS['REF_LIST'])){
-		$GLOBALS['REF_LIST'] = [];
-	}
-	$GLOBALS['REF_LIST'][$name] = '';
 }
 
 function ref_teacher_get(){
@@ -304,12 +311,6 @@ function ref_teacher_get(){
 	return $list;
 }
 
-function ref_curriculum_set($name){
-	if(!isset($GLOBALS['REF_LIST']) || !is_array($GLOBALS['REF_LIST'])){
-		$GLOBALS['REF_LIST'] = [];
-	}
-	$GLOBALS['REF_LIST'][$name] = '';
-}
 
 function ref_curriculum_get(){
 	if(!isset($GLOBALS['REF_LIST'])){
@@ -349,4 +350,14 @@ function implode_out($name){
 		return $name;
 	}
 	return implode(" - ", $name);
+}
+
+function scores_full_check(&$list){
+	$x = db_class()->getDriver()->select("info_student", ["[><]mg_curriculum" => ['id_id' => 'id_id']], ["info_student.is_id"], [
+		'AND' => [
+			'info_student.is_id' => $list['is_id'],
+			'mg_curriculum.mc_id' => $list['mc_id'],
+		]
+	]);
+	return count($x) > 0;
 }

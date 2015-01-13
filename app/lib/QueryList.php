@@ -135,7 +135,8 @@ class QueryList{
 			if(isset($v['ref_set']) && isset($v['ref_get'])){
 				$this->data_call[$name] = [
 					'set' => $v['ref_set'],
-					'get' => $v['ref_get']
+					'get' => $v['ref_get'],
+					'implode' => isset($v['ref_implode']) && $v['ref_implode']
 				];
 			}
 		}
@@ -179,7 +180,11 @@ class QueryList{
 			$list = call_user_func($v['get']);
 			for($i = 0; $i < count($data); $i++){
 				if(isset($list[$data[$i][$name]])){
-					$data[$i][$name] = $list[$data[$i][$name]];
+					if($v['implode'] && !is_array($list[$data[$i][$name]])){
+						$data[$i][$name] = "[{$data[$i][$name]}]" . $list[$data[$i][$name]];
+					} else{
+						$data[$i][$name] = $list[$data[$i][$name]];
+					}
 				}
 			}
 		}

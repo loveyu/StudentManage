@@ -206,6 +206,13 @@ SQL;
 		], ['ico_id' => $ids]);
 	}
 
+	public function get_student_names($ids){
+		return $this->driver->select("info_student", [
+			'is_id',
+			'is_name'
+		], ['is_id' => $ids]);
+	}
+
 	public function get_class_info($ids){
 		return $this->driver->select("info_class", "*", ['icl_id' => $ids]);
 	}
@@ -216,6 +223,13 @@ SQL;
 			'info_college.ico_name',
 			'info_campus.ic_name',
 		], ['ico_id' => $ids]);
+	}
+
+	public function get_curriculum_names_by_mc_id($ids){
+		return $this->driver->select("mg_curriculum", ['[>]info_curriculum' => ['cu_id' => 'cu_id']], [
+			'mg_curriculum.mc_id',
+			'info_curriculum.cu_name',
+		], ['mc_id' => $ids]);
 	}
 
 	public function get_discipline_names($ids){

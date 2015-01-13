@@ -147,8 +147,9 @@ return [
 				'type' => 'select',
 				'check_func' => 'check_college_info',
 				'select_func' => 'get_college_info',
-				'ref_set' => 'ref_college_set',
+				'ref_set' => 'ref_list_set',
 				'ref_get' => 'ref_college_get_and_campus',
+				'ref_implode' => 1,
 				'out_call' => 'implode_out'
 			],
 		]
@@ -217,8 +218,9 @@ return [
 				'type' => 'select',
 				'check_func' => 'check_college_info',
 				'select_func' => 'get_college_info',
-				'ref_set' => 'ref_college_set',
+				'ref_set' => 'ref_list_set',
 				'ref_get' => 'ref_college_get',
+				'ref_implode' => 1,
 			],
 			'icl_year' => [
 				'name' => '年份',
@@ -230,8 +232,9 @@ return [
 				'type' => 'select',
 				'edit_type' => 'text',
 				'edit_value_call' => 'get_class_discipline_value',
-				'ref_set' => 'ref_discipline_set',
+				'ref_set' => 'ref_list_set',
 				'ref_get' => 'ref_discipline_get',
+				'ref_implode' => 1,
 			],
 			'icl_teacher' => [
 				'name' => '班主任',
@@ -331,8 +334,9 @@ return [
 				'type' => 'select',
 				'check_func' => 'check_college_info',
 				'select_func' => 'get_college_info',
-				'ref_set' => 'ref_college_set',
+				'ref_set' => 'ref_list_set',
 				'ref_get' => 'ref_college_get_and_campus',
+				'ref_implode' => 1,
 				'out_call' => 'implode_out'
 			],
 			'cu_note' => [
@@ -718,8 +722,9 @@ return [
 				'edit_type' => 'text',
 				'edit_value_call' => 'get_college_value',
 				'check_func' => 'check_college_info',
-				'ref_set' => 'ref_college_set',
+				'ref_set' => 'ref_list_set',
 				'ref_get' => 'ref_college_get',
+				'ref_implode' => 1,
 			],
 			'is_grade' => [
 				'name' => '年级',
@@ -731,8 +736,9 @@ return [
 				'type' => 'select',
 				'edit_type' => 'text',
 				'edit_value_call' => 'get_class_discipline_value',
-				'ref_set' => 'ref_discipline_set',
+				'ref_set' => 'ref_list_set',
 				'ref_get' => 'ref_discipline_get',
+				'ref_implode' => 1,
 			],
 			'icl_id' => [
 				'name' => '班级',
@@ -843,8 +849,9 @@ return [
 				'name' => '教师ID',
 				'type' => 'text',
 				'rule' => '/^[1-9]{1}[0-9]*$/',
-				'ref_set' => 'ref_teacher_set',
+				'ref_set' => 'ref_list_set',
 				'ref_get' => 'ref_teacher_get',
+				'ref_implode' => 1,
 				'edit' => 1
 			],
 			'mc_year' => [
@@ -871,8 +878,9 @@ return [
 				'type' => 'select',
 				'check_func' => 'check_college_info',
 				'select_func' => 'get_college_info',
-				'ref_set' => 'ref_college_set',
+				'ref_set' => 'ref_list_set',
 				'ref_get' => 'ref_college_get_and_campus',
+				'ref_implode' => 1,
 				'out_call' => 'implode_out',
 				'check' => ['not_empty']
 			],
@@ -887,8 +895,9 @@ return [
 				'type' => 'select',
 				'edit_type' => 'text',
 				'edit_value_call' => 'get_class_discipline_value',
-				'ref_set' => 'ref_discipline_set',
+				'ref_set' => 'ref_list_set',
 				'ref_get' => 'ref_discipline_get',
+				'ref_implode' => 1,
 				'check' => ['not_empty']
 			],
 			'cu_id' => [
@@ -896,13 +905,66 @@ return [
 				'type' => 'select',
 				'edit_type' => 'text',
 				'edit_value_call' => 'get_class_curriculum_value',
-				'ref_set' => 'ref_curriculum_set',
+				'ref_set' => 'ref_list_set',
 				'ref_get' => 'ref_curriculum_get',
+				'ref_implode' => 1,
 				'check' => ['not_empty']
 			],
 			'mc_note' => [
 				'name' => '备注',
 				'type' => 'textarea',
+				'edit' => 1
+			]
+		]
+	],
+	'scores_mg' => [
+		'name' => '选课管理',
+		'table' => 'scores',
+		'full_check'=>'scores_full_check',
+		'search' => [
+			'is_id' => [
+				'name' => '学号',
+				'type' => 'text',
+				'size' => 10
+			],
+			'mc_id' => [
+				'name' => '专业课程号',
+				'type' => 'text',
+				'size' => 10
+			],
+		],
+		'filed' => [
+			'is_id' => [
+				'name' => '学生学号',
+				'type' => 'text',
+				'rule' => '/^[1-9]{1}[0-9]{9}$/',
+				'ref_set' => 'ref_list_set',
+				'ref_get' => 'ref_student_name_get',
+				'ref_implode' => 1,
+				'pk' => 1
+			],
+			'mc_id' => [
+				'name' => '专业课程ID',
+				'type' => 'text',
+				'rule' => '/^[1-9]{1}[0-9]*$/',
+				'ref_set' => 'ref_list_set',
+				'ref_get' => 'ref_curr_id_by_mc_id_get',
+				'ref_implode' => 1,
+				'pk' => 1
+			],
+			'sc_work' => [
+				'name' => '平时成绩',
+				'type' => 'text',
+				'edit' => 1
+			],
+			'sc_test' => [
+				'name' => '考试成绩',
+				'type' => 'text',
+				'edit' => 1
+			],
+			'sc_total' => [
+				'name' => '总成绩',
+				'type' => 'text',
 				'edit' => 1
 			]
 		]
