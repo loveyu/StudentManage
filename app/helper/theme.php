@@ -183,6 +183,30 @@ function list2keymap($list, $key, $value){
 		}
 	}
 	return $rt;
+}/**
+ * 将数据列表转为KeyMap，保留键名
+ * @param array        $list
+ * @param string|array $value
+ * @return array
+ */
+function list2keymapSK($list, $value){
+	if(!is_array($list)){
+		return [];
+	}
+	$rt = [];
+	if(is_array($value)){
+		foreach($list as $key=> $v){
+			$rt[$key] = [];
+			foreach($value as $v2){
+				$rt[$key][$v2] = $v[$v2];
+			}
+		}
+	} else{
+		foreach($list as $key=> $v){
+			$rt[$key] = $v[$value];
+		}
+	}
+	return $rt;
 }
 
 function get_campus_info(){

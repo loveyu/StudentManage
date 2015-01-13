@@ -57,7 +57,7 @@ class QueryList{
 
 
 	public function search_value($name){
-		return isset($this->search[$name]) ? $this->search[$name] : NULL;
+		return req()->get($name);
 	}
 
 	/**
@@ -144,7 +144,15 @@ class QueryList{
 			$req = req();
 			foreach($info['info']['search'] as $n => $v){
 				if(isset($_GET[$n]) && $_GET[$n] !== ""){
-					$search[$n] = $req->get($n);
+					if(isset($v['like']) && $v['like']){
+						if(!isset($search['LIKE'])){
+							$search['LIKE'] =[];
+						}
+						$search['LIKE'][$n] = $req->get($n);
+					} else{
+						$search[$n] = $req->get($n);
+					}
+					$this->search[$n] = $req->get($n);
 				}
 			}
 			if(count($search) > 1){
@@ -152,7 +160,6 @@ class QueryList{
 			} elseif(count($search) == 1){
 				$this->where = $search;
 			}
-			$this->search = array_merge($this->search, $search);
 		}
 		$this->get_list();
 	}

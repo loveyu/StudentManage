@@ -3,6 +3,7 @@ return [
 	'campus_info' => [
 		'name' => '校园信息',
 		'table' => 'info_campus',
+		'search' => [],
 		'filed' => [
 			'ic_name' => [
 				'name' => '名称',
@@ -39,11 +40,16 @@ return [
 		'name' => '学院信息',
 		'table' => 'info_college',
 		'search' => [
+			'ico_id' => [
+				'name' => 'ID',
+				'type' => 'text',
+				'size' => 10
+			],
 			'ic_name' => [
 				'name' => '校区',
 				'type' => 'select',
 				'list_call' => 'get_campus_info'
-			]
+			],
 		],
 		'filed' => [
 			'ico_id' => [
@@ -87,6 +93,11 @@ return [
 		'name' => '专业信息',
 		'table' => 'info_discipline',
 		'search' => [
+			'id_id' => [
+				'name' => 'ID',
+				'type' => 'text',
+				'size' => 10
+			],
 			'ico_id' => [
 				'name' => '学院',
 				'type' => 'select',
@@ -96,6 +107,11 @@ return [
 				'name' => '年级',
 				'type' => 'select',
 				'list' => array_number_dd(date('Y'), 1998, true)
+			],
+			'id_name' => [
+				'name' => '名称',
+				'type' => 'text',
+				'like' => 1
 			]
 		],
 		'filed' => [
@@ -142,15 +158,42 @@ return [
 		'table' => 'info_class',
 		'ajax' => 'class_info',
 		'search' => [
+			'icl_id' => [
+				'name' => 'ID',
+				'type' => 'text',
+				"size" => 10
+			],
+			'icl_teacher' => [
+				'name' => '老师',
+				'type' => 'text',
+				"size" => 4,
+				"like" => 1
+			],
 			'ico_id' => [
 				'name' => '学院',
 				'type' => 'select',
 				'list_call' => 'get_college_info'
 			],
+			'id_id' => [
+				'name' => '专业ID',
+				'type' => 'text',
+				"size" => 10
+			],
 			'icl_year' => [
 				'name' => '年级',
 				'type' => 'select',
 				'list' => array_number_dd(date('Y'), 1998, true)
+			],
+			'icl_number' => [
+				'name' => '班号',
+				'type' => 'select',
+				'list' => [
+					1 => 1,
+					2 => 2,
+					3 => 3,
+					4 => 4,
+					5 => 5
+				]
 			]
 		],
 		'filed' => [
@@ -209,11 +252,36 @@ return [
 		'name' => '课程信息',
 		'table' => 'info_curriculum',
 		'search' => [
+			'cu_id' => [
+				'name' => 'ID',
+				'type' => 'text',
+				'size' => 8
+			],
+			'cu_name' => [
+				'name' => '名称',
+				'type' => 'text',
+				'like' => 1
+			],
 			'ico_id' => [
 				'name' => '学院',
 				'type' => 'select',
 				'list_call' => 'get_college_info'
 			],
+			'cu_point' => [
+				'name' => '学分',
+				'type' => 'text',
+				'size' => 3
+			],
+			'cu_time' => [
+				'name' => '学时',
+				'type' => 'text',
+				'size' => 3
+			],
+			'cu_book' => [
+				'name' => '书籍',
+				'type' => 'text',
+				'like' => 1
+			]
 		],
 		'filed' => [
 			'cu_id' => [
@@ -234,7 +302,7 @@ return [
 			'cu_point' => [
 				'name' => '学分',
 				'type' => 'text',
-				'vt' => 'number',
+				'vt' => 'text',
 				'edit' => 1,
 				'check' => [
 					'not_empty',
@@ -279,6 +347,77 @@ return [
 		'name' => '教师信息',
 		'table' => 'info_teacher',
 		'row' => 2,
+		'search' => [
+			'it_id' => [
+				'name' => 'id',
+				'type' => 'text',
+				'size' => 8
+			],
+			'it_name' => [
+				'name' => '姓名',
+				'type' => 'text',
+				'like' => 1,
+				'size' => 4
+			],
+			'it_sex' => [
+				'name' => '性别',
+				'type' => 'select',
+				'list' => [
+					'男' => '男',
+					'女' => '女'
+				],
+			],
+			'it_marry' => [
+				'name' => '婚姻',
+				'type' => 'select',
+				'list' => [
+					'已婚' => '已婚',
+					'未婚' => '未婚'
+				]
+			],
+			'it_edu' => [
+				'name' => '学历',
+				'type' => 'select',
+				'list' => [
+					'博士' => '博士',
+					'研究生' => '研究生',
+					'博士后' => '博士后',
+					'博士后及以上' => '博士后及以上',
+					'本科' => '本科',
+					'大专' => '大专',
+					'高职' => '高职',
+					'高中' => '高中',
+					'中学' => '中学',
+					'小学' => '小学',
+					'其他' => '其他'
+				]
+			],
+			'it_birthday' => [
+				'name' => '生日',
+				'type' => 'text',
+				'like' => 1
+			],
+			'it_tel' => [
+				'name' => '电话',
+				'type' => 'text',
+				'like' => 1,
+			],
+			'it_email' => [
+				'name' => '邮箱',
+				'type' => 'text',
+				'like' => 1,
+			],
+			'it_address' => [
+				'name' => '地址',
+				'type' => 'text',
+				'like' => 1,
+			],
+			'it_id_card' => [
+				'name' => '身份证',
+				'type' => 'text',
+				'like' => 1,
+			],
+		],
 		'filed' => [
 			'it_id' => [
 				'name' => '编号',
@@ -402,6 +541,11 @@ return [
 			'student_edit'
 		],
 		'search' => [
+			'is_id' => [
+				'name' => 'ID',
+				'type' => 'text',
+				'size' => 10
+			],
 			'ico_id' => [
 				'name' => '学院',
 				'type' => 'select',
@@ -416,7 +560,65 @@ return [
 				'name' => '年级',
 				'type' => 'select',
 				'list' => array_number_dd(date('Y'), 1998, true)
-			]
+			],
+			'is_hometown' => [
+				'name' => '籍贯',
+				'type' => 'text',
+				'like' => 1,
+			],
+			'is_sex' => [
+				'name' => '性别',
+				'type' => 'select',
+				'select' => [
+					'男' => '男',
+					'女' => '女'
+				]
+			],
+			'is_birthday' => [
+				'name' => '生日',
+				'type' => 'text',
+				'like' => 1,
+			],
+			'is_province' => [
+				'name' => '省份',
+				'type' => 'text',
+				'like' => 1,
+			],
+			'is_city' => [
+				'name' => '市',
+				'like' => 1,
+				'type' => 'text',
+			],
+			'is_county' => [
+				'name' => '县',
+				'type' => 'text',
+				'like' => 1,
+			],
+			'is_zone' => [
+				'name' => '区',
+				'type' => 'text',
+				'like' => 1,
+			],
+			'is_address' => [
+				'name' => '详细地址',
+				'type' => 'text',
+				'like' => 1,
+			],
+			'is_id_card' => [
+				'name' => '身份证',
+				'type' => 'text',
+				'like' => 1,
+			],
+			'is_politics' => [
+				'name' => '政治面貌',
+				'type' => 'select',
+				'list' => [
+					'群众' => '群众',
+					'党员' => '党员',
+					'中共团员' => '中共团员',
+					'预备党员' => '预备党员'
+				]
+			],
 		],
 		'list_style' => 'width:2500px',
 		'row' => 3,
@@ -589,6 +791,21 @@ return [
 				'name' => '学院',
 				'type' => 'select',
 				'list_call' => 'get_college_info'
+			],
+			'it_id' => [
+				'name' => '教师ID',
+				'type' => 'text',
+				'size' => 8
+			],
+			'cu_id' => [
+				'name' => '课程ID',
+				'type' => 'text',
+				'size' => 10
+			],
+			'id_id' => [
+				'name' => '专业ID',
+				'type' => 'text',
+				'size' => 10
 			],
 			'mc_year' => [
 				'name' => '学年',

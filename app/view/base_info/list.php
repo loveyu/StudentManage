@@ -12,17 +12,34 @@ $this->get_header(); ?>
 	</h3>
 <?php if(isset($__info['search'])){
 	echo "<form class=\"form-inline\" method=\"get\" action='" . get_url("BaseInfo", "op", $__type, "list") . "'>";
+	$__info['search']['order'] = [
+		'name' => '排序',
+		'type' => 'select',
+		'list' => list2keymapSK($__info['filed'], "name")
+	];
+	$__info['search']['sort'] = [
+		'name' => '排序方式',
+		'type' => 'select',
+		'list' => [
+			'ASC' => '顺序',
+			'DESC' => '倒序',
+		],
+	];
 	foreach($__info['search'] as $search_name => $search){
+		$is_like = (isset($search['like']) && $search['like'] == 1) ? "(*)" : "";
 		?>
 		<div class="form-group">
 			<label class="sr-only" for="ID_<?php echo $search_name ?>"><?php echo $search['name']?></label>
 
 			<div class="input-group">
-				<div class="input-group-addon"><?php echo $search['name']?></div>
+				<div class="input-group-addon"><?php echo $search['name'], $is_like?></div>
 				<?php
 				switch($search['type']){
 					case "text":
-						?><input name="<?php echo $search_name?>" type="text" class="form-control" id="ID_<?php echo $search_name ?>"><?php
+						?><input<?php echo isset($search['size']) ? (" size=\"" . $search['size'] . "\" ") : ""?> name="<?php echo $search_name?>"
+																												  value="<?php echo $__query->search_value($search_name)?>"
+																												  type="text" class="form-control"
+																												  id="ID_<?php echo $search_name ?>"><?php
 						break;
 					case "select":
 						?>

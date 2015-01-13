@@ -29,6 +29,9 @@ function size_change() {
 	var height = $(window).height();
 	$("#RightContent").css("min-height", height + "px");
 	$("#LeftMenu").css("min-height", height + "px");
+	if($("#RightContent").height()>height){
+		$("#LeftMenu").height($("#RightContent").height());
+	}
 }
 jQuery(function ($) {
 	size_change();
