@@ -6,6 +6,7 @@
 $detail = $this->get_user_detail();
 $this->get_header();
 ?>
+	<h1 class="title">登录基本信息</h1>
 	<dl class="dl-horizontal user-info">
 		<dt>基本信息</dt>
 		<dd>

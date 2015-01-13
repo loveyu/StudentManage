@@ -12,9 +12,10 @@ table.table tbody td {
 
 /* 登陆页面 */
 .login-form {
-	width: 100%;
-	max-width: 300px;
-	margin: 100px 200px auto auto;
+	/*width: 100%;*/
+	/*max-width: 300px;*/
+	/*margin: 100px 200px auto auto;*/
+	margin-top: 80px;
 	background: rgba(246, 246, 246, 0.51);
 }
 
@@ -24,18 +25,19 @@ table.table tbody td {
 
 .login-form fieldset legend {
 	border: none;
-	padding: 20px 0 0 5px;
-	color: #3557cd;
+	padding: 20px 0 0 0;
+	color: #444;
+	font-weight: bold;
+	text-shadow: #fff 1px 1px;
 }
 
 .login-bg {
 	background: url("../images/background.jpg") top center no-repeat #eee;
 	background-size: cover;
-	min-width: 600px;
 }
 
 .login-bg h1 {
-	margin: 100px 0 0 150px;
+	margin-top: 100px;
 	text-shadow: #ffffff 1px 1px;
 }
 

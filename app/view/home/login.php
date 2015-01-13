@@ -14,11 +14,14 @@
 	<link rel="stylesheet" href="<?php echo $this->get_asset('css/style.css'); ?>"/>
 	<link rel="stylesheet" href="<?php echo $this->get_bootstrap('js/bootstrap.min.js'); ?>"/>
 </head>
-<body class="login-bg">
-<h1>长江大学
+<body class="login-bg container-fluid">
+<div class="row">
+<h1 class="col-md-8 col-md-offset-2">长江大学
 	<small>学籍管理系统</small>
 </h1>
-<form action="" method="post" class="login-form">
+</div>
+<div class="row">
+<form action="" method="post" class="login-form col-sm-3 col-sm-offset-7">
 	<fieldset>
 		<legend>用户登录</legend>
 		<?php if(isset($__msg) && !empty($__msg)): ?>
@@ -37,5 +40,6 @@
 		</div>
 	</fieldset>
 </form>
+</div>
 </body>
 </html>
