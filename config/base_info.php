@@ -118,7 +118,8 @@ return [
 				'check_func' => 'check_college_info',
 				'select_func' => 'get_college_info',
 				'ref_set' => 'ref_college_set',
-				'ref_get' => 'ref_college_get',
+				'ref_get' => 'ref_college_get_and_campus',
+				'out_call' => 'implode_out'
 			],
 			'cu_note' => [
 				'name' => '备注',
@@ -322,7 +323,7 @@ return [
 			'student_info',
 			'city'
 		],
-		'list_style' => 'width:2000px',
+		'list_style' => 'width:2500px',
 		'row' => 4,
 		'filed' => [
 			'is_id' => [
@@ -428,6 +429,7 @@ return [
 				'name' => '密码',
 				'type' => 'text',
 				'vt' => 'password',
+				'no_out' => 1
 			],
 			'is_email' => [
 				'name' => '邮箱',
@@ -504,23 +506,28 @@ return [
 				'check_func' => 'check_college_info',
 				'select_func' => 'get_college_info',
 				'ref_set' => 'ref_college_set',
-				'ref_get' => 'ref_college_get',
+				'ref_get' => 'ref_college_get_and_campus',
+				'out_call' => 'implode_out',
+				'check' => ['not_empty']
 			],
 			'mc_grade' => [
 				'name' => '年级',
 				'type' => 'select',
+				'check' => ['not_empty']
 			],
 			'id_id' => [
 				'name' => '专业',
 				'type' => 'select',
 				'ref_set' => 'ref_discipline_set',
 				'ref_get' => 'ref_discipline_get',
+				'check' => ['not_empty']
 			],
 			'cu_id' => [
 				'name' => '课程',
 				'type' => 'select',
 				'ref_set' => 'ref_curriculum_set',
 				'ref_get' => 'ref_curriculum_get',
+				'check' => ['not_empty']
 			]
 		]
 	]

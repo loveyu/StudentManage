@@ -151,6 +151,7 @@ class BaseInfo extends Page{
 				foreach($v['check'] as $c){
 					switch($c){
 						case 'no_empty':
+						case 'not_empty':
 							if(empty($info[$name])){
 								$flag = true;
 							}
