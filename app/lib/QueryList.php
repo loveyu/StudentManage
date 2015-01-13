@@ -21,24 +21,31 @@ class QueryList{
 	private $data = [];
 	private $where = [];
 	private $data_call = [];
+	private $search = [];
 
 	function __construct(){
 		$req = req();
 		$this->p = $req->get('p');
+
 		if($this->p <= 0){
 			$this->p = 1;
 		}
 		$this->n = $req->get('n');
+
 		if($this->n < 10){
 			$this->n = 20;
 		}
+		if(!isset($_GET['n'])){
+			$this->search['n'] = $this->n;
+		}
 		if(isset($_GET['sort'])){
 			$this->sort = (strtolower($req->get('sort')) == "asc") ? "ASC" : "DESC";
+			$this->search['sort'] = $this->sort;
 		}
 		if(isset($_GET['order'])){
 			$this->order_by = $req->get('order');
+			$this->search['order'] = $this->order_by;
 		}
-		$this->setSearch();
 	}
 
 	/**
@@ -48,8 +55,9 @@ class QueryList{
 		return $this->data;
 	}
 
-	private function setSearch(){
 
+	public function search_value($name){
+		return isset($this->search[$name]) ? $this->search[$name] : NULL;
 	}
 
 	/**
@@ -131,6 +139,21 @@ class QueryList{
 				];
 			}
 		}
+		if(isset($info['info']['search'])){
+			$search = [];
+			$req = req();
+			foreach($info['info']['search'] as $n => $v){
+				if(isset($_GET[$n]) && $_GET[$n] !== ""){
+					$search[$n] = $req->get($n);
+				}
+			}
+			if(count($search) > 1){
+				$this->where = ['AND' => $search];
+			} elseif(count($search) == 1){
+				$this->where = $search;
+			}
+			$this->search = array_merge($this->search, $search);
+		}
 		$this->get_list();
 	}
 
@@ -172,8 +195,8 @@ class QueryList{
 			$s = "";
 			$last = NULL;
 			foreach($this->get_nav_list() as $v){
-				if($last!==NULL && $last!=($v-1)){
-					$s.="<li class=\"disabled\"><a href='#'> ...</a></li>";
+				if($last !== NULL && $last != ($v - 1)){
+					$s .= "<li class=\"disabled\"><a href='#'> ...</a></li>";
 				}
 				$last = $v;
 				$c = $v == $this->p ? " class=\"active\"" : "";
@@ -189,7 +212,13 @@ HTML;
 	}
 
 	private function build_url($i){
-		return get_url(u()->getUriInfo()->getUrlList()) . "?p=" . $i;
+		$list = $this->search;
+		$list['p'] = $i;
+		$rt = [];
+		foreach($list as $n => $v){
+			$rt[] = $n . "=" . urlencode($v);
+		}
+		return get_url(u()->getUriInfo()->getUrlList()) . "?" . implode("&", $rt);
 	}
 
 	private function get_nav_list(){
@@ -198,7 +227,7 @@ HTML;
 		for($i = (($this->p > ($i + 5)) ? ($this->p - 5) : 2); $i <= $this->p + 5 && $i <= $this->all_page; $i++){
 			$rt[] = $i;
 		}
-		if(!in_array($this->all_page,$rt)){
+		if(!in_array($this->all_page, $rt)){
 			$rt[] = $this->all_page;
 		}
 		return $rt;

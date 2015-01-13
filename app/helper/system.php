@@ -120,6 +120,44 @@ function session_class(){
 }
 
 /**
+ * 输出一个范围的数组
+ * @param $begin
+ * @param $end
+ * @param $keys
+ * @return array
+ */
+function array_number_aa($begin, $end, $keys = false){
+	$rt = [];
+	for(; $begin <= $end; $begin++){
+		if($keys){
+			$rt[$begin] = $begin;
+		} else{
+			$rt[] = $begin;
+		}
+	}
+	return $rt;
+}
+
+/**
+ * 输出一个范围的数组
+ * @param $begin
+ * @param $end
+ * @param $keys
+ * @return array
+ */
+function array_number_dd($end, $begin, $keys = false){
+	$rt = [];
+	for(; $end >= $begin; $end--){
+		if($keys){
+			$rt[$end] = $end;
+		} else{
+			$rt[] = $end;
+		}
+	}
+	return $rt;
+}
+
+/**
  * 获取QueryList对象实例
  * @return \ULib\QueryList
  */

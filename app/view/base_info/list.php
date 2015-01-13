@@ -10,7 +10,37 @@ $this->get_header(); ?>
 		<?php if(access_class()->write($__type)): ?><a class="btn btn-primary btn-sm" href="<?php echo get_url('BaseInfo', 'op', $__type, "add") ?>">
 				添加</a><?php endif; ?>
 	</h3>
-<?php
+<?php if(isset($__info['search'])){
+	echo "<form class=\"form-inline\" method=\"get\" action='" . get_url("BaseInfo", "op", $__type, "list") . "'>";
+	foreach($__info['search'] as $search_name => $search){
+		?>
+		<div class="form-group">
+			<label class="sr-only" for="ID_<?php echo $search_name ?>"><?php echo $search['name']?></label>
+
+			<div class="input-group">
+				<div class="input-group-addon"><?php echo $search['name']?></div>
+				<?php
+				switch($search['type']){
+					case "text":
+						?><input name="<?php echo $search_name?>" type="text" class="form-control" id="ID_<?php echo $search_name ?>"><?php
+						break;
+					case "select":
+						?>
+						<select name="<?php echo $search_name?>" class="form-control" id="ID_<?php echo $search_name ?>">
+							<option value="">&nbsp;</option>
+							<?php echo html_option(isset($search['list_call']) ? call_user_func($search['list_call']) : (isset($search['list']) ? $search['list'] : []), $__query->search_value($search_name)) ?>
+						</select>
+
+						<?php
+						break;
+				}
+				?>
+			</div>
+		</div>
+
+	<?php }
+	echo "<button type=\"submit\" class=\"btn btn-primary\">查询</button></form>";
+}
 if(!$__query->has_data()):
 	echo "<h4 class='bg-danger not_found'>数据未找到</h4>";
 else:
@@ -52,7 +82,7 @@ endif; ?>
 			if (confirm("你确定删除选中的数据么？")) {
 				$.post("<?php echo get_url("BaseInfo","del",$__type)?>", obj_info[i], function (data) {
 					if (data.status) {
-						$("#TR_ID_"+i).slideUp("slow",function(){
+						$("#TR_ID_" + i).slideUp("slow", function () {
 							$(this).remove();
 						});
 					} else {
@@ -62,10 +92,10 @@ endif; ?>
 			}
 			return false;
 		}
-		function edit(n){
+		function edit(n) {
 			var url = "<?php echo get_url("BaseInfo",'op',$__type,"edit")?>?";
-			$.each(obj_info[n],function(index,value){
-				url+=index+"="+encodeURI(value);
+			$.each(obj_info[n], function (index, value) {
+				url += index + "=" + encodeURI(value);
 			});
 			location.href = url;
 			return false;

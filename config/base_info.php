@@ -38,6 +38,13 @@ return [
 	'college_info' => [
 		'name' => '学院信息',
 		'table' => 'info_college',
+		'search' => [
+			'ic_name' => [
+				'name' => '校区',
+				'type' => 'select',
+				'list_call' => 'get_campus_info'
+			]
+		],
 		'filed' => [
 			'ico_id' => [
 				'name' => '编号',
@@ -79,6 +86,18 @@ return [
 	'discipline_info' => [
 		'name' => '专业信息',
 		'table' => 'info_discipline',
+		'search' => [
+			'ico_id' => [
+				'name' => '学院',
+				'type' => 'select',
+				'list_call' => 'get_college_info'
+			],
+			'id_time' => [
+				'name' => '年级',
+				'type' => 'select',
+				'list' => array_number_dd(date('Y'), 1998, true)
+			]
+		],
 		'filed' => [
 			'id_id' => [
 				'name' => '编号',
@@ -122,6 +141,18 @@ return [
 		'name' => '班级信息',
 		'table' => 'info_class',
 		'ajax' => 'class_info',
+		'search' => [
+			'ico_id' => [
+				'name' => '学院',
+				'type' => 'select',
+				'list_call' => 'get_college_info'
+			],
+			'icl_year' => [
+				'name' => '年级',
+				'type' => 'select',
+				'list' => array_number_dd(date('Y'), 1998, true)
+			]
+		],
 		'filed' => [
 			'icl_id' => [
 				'name' => '编号',
@@ -177,6 +208,13 @@ return [
 	'curriculum_info' => [
 		'name' => '课程信息',
 		'table' => 'info_curriculum',
+		'search' => [
+			'ico_id' => [
+				'name' => '学院',
+				'type' => 'select',
+				'list_call' => 'get_college_info'
+			],
+		],
 		'filed' => [
 			'cu_id' => [
 				'name' => '编号',
@@ -363,6 +401,23 @@ return [
 			'city',
 			'student_edit'
 		],
+		'search' => [
+			'ico_id' => [
+				'name' => '学院',
+				'type' => 'select',
+				'list_call' => 'get_college_info'
+			],
+			'ic_name' => [
+				'name' => '校区',
+				'type' => 'select',
+				'list_call' => 'get_campus_info'
+			],
+			'is_grade' => [
+				'name' => '年级',
+				'type' => 'select',
+				'list' => array_number_dd(date('Y'), 1998, true)
+			]
+		],
 		'list_style' => 'width:2500px',
 		'row' => 3,
 		'filed' => [
@@ -529,6 +584,34 @@ return [
 		'name' => '课程安排',
 		'table' => 'mg_curriculum',
 		'ajax' => 'curriculum_m',
+		'search' => [
+			'ico_id' => [
+				'name' => '学院',
+				'type' => 'select',
+				'list_call' => 'get_college_info'
+			],
+			'mc_year' => [
+				'name' => '学年',
+				'type' => 'select',
+				'list' => array_number_dd(date('Y'), 1998, true)
+			],
+			'mc_grade' => [
+				'name' => '年级',
+				'type' => 'select',
+				'list' => array_number_dd(date('Y'), 1998, true)
+			],
+			'mc_number' => [
+				'name' => '学期',
+				'type' => 'select',
+				'list' => [
+					1 => 1,
+					2 => 2,
+					3 => 3,
+					4 => 4
+				]
+			],
+		],
+
 		'filed' => [
 			'mc_id' => [
 				'name' => '编号',
@@ -545,7 +628,7 @@ return [
 				'rule' => '/^[1-9]{1}[0-9]*$/',
 				'ref_set' => 'ref_teacher_set',
 				'ref_get' => 'ref_teacher_get',
-				'edit'=>1
+				'edit' => 1
 			],
 			'mc_year' => [
 				'name' => '学年',
