@@ -90,3 +90,9 @@ h4.not_found {
 .add_form {
 	max-width: 600px;
 }
+
+#PageNavChange{
+	padding-left: 5px;
+	border: 1px solid #999;
+	border-radius: 2px;
+}

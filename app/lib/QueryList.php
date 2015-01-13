@@ -215,18 +215,18 @@ class QueryList{
 				$s .= "<li{$c}><a href=\"" . $this->build_url($v) . "\">{$v}</a></li>";
 			}
 			$pg_nvm = html_option([
-				10 => 10,
-				20 => 20,
-				50 => 50,
-				80 => 80,
-				120 => 120,
+				10 => "10条/页",
+				20 => "20条/页",
+				50 => "50条/页",
+				80 => "80条/页",
+				120 => "120条/页",
 			], $this->getN());
 			$rt .= <<<HTML
 <nav>
   <ul class="pagination">
   <li class="disabled"><a href="#">共{$this->number_all}</a></li>
   {$s}
-  <li class="disabled"><a href="#" onclick="return false;"><select id="PageNavChange">$pg_nvm</select>/页</a></li>
+  <li class="disabled"><a href="#" onclick="return false;"><select id="PageNavChange">$pg_nvm</select></a></li>
   </ul>
 </nav>
 HTML;
