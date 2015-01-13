@@ -296,6 +296,26 @@ function ref_curriculum_get(){
 	return $list;
 }
 
+function get_class_discipline_value($id){
+	$is = list2keymap(db_class()->get_discipline_names([$id]), "id_id", "id_name");
+	return $is[$id];
+}
+
+function get_class_curriculum_value($id){
+	$is = list2keymap(db_class()->get_curriculum_names([$id]), "cu_id", "cu_name");
+	return $is[$id];
+}
+
+function get_college_value($id){
+	$is = list2keymap(db_class()->get_college_names([$id]), "ico_id", "ico_name");
+	return $is[$id];
+}
+
+function get_class_info_value($id){
+	$is = list2keymap(db_class()->get_class_info([$id]), "icl_id", "icl_number");
+	return $is[$id];
+}
+
 function textarea_out($name){
 	return implode("<br>", array_map('htmlspecialchars', explode("\n", $name)));
 }

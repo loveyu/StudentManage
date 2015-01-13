@@ -1239,7 +1239,7 @@ class DataCreate extends Page{
 					'ico_id' => sprintf("%04d", $n++),
 					'ico_name' => $names[$v2],
 					'ic_name' => $v,
-					'ico_tel' => "13" . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999),
+					'ico_tel' => "13" . rand(100, 999) . rand(100, 999) . rand(100, 999),
 					'ico_teacher' => $this->name_list[array_rand($this->name_list)] . "老师",
 				]);
 			}
@@ -1307,7 +1307,7 @@ class DataCreate extends Page{
 				'it_sex' => $sex[rand(0, 1)],
 				'it_birthday' => $b[0] . "-" . $b[1] . "-" . $b[2],
 				'it_marry' => $m[rand(0, 1)],
-				'it_tel' => "1" . rand(3, 8) . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999),
+				'it_tel' => "1" . rand(3, 8) . rand(100, 999) . rand(100, 999) . rand(100, 999),
 				'it_address' => $city[array_rand($city)],
 				'it_email' => $this->rand(8) . "@" . $this->rand(4) . "." . $this->rand(3),
 				'it_note' => '',
@@ -1328,17 +1328,51 @@ class DataCreate extends Page{
 		$db = db_class()->getDriver();
 		$list = array_unique(array_map("trim", explode("\n", file_get_contents(_RootPath_ . "/test/id_list.txt"))));
 		foreach($db->select("info_college", ['ico_id']) as $cv){
-			$a_list = array_rand($list,rand(15,count($list)));
+			$a_list = array_rand($list, rand(15, count($list)));
 			foreach($a_list as $c){
-				$point = rand(2,9);
-				$db->insert("info_curriculum",[
-					'cu_name'=>$list[$c],
-					'cu_point'=>0.5*$point,
-					'cu_time'=>4*$point,
-					'cu_book'=>$list[$c]."书",
-					'cu_note'=>'无',
-					'ico_id'=>$cv['ico_id']
+				$point = rand(2, 9);
+				$db->insert("info_curriculum", [
+					'cu_name' => $list[$c],
+					'cu_point' => 0.5 * $point,
+					'cu_time' => 4 * $point,
+					'cu_book' => $list[$c] . "书",
+					'cu_note' => '无',
+					'ico_id' => $cv['ico_id']
 				]);
+			}
+		}
+	}
+
+	public function add_cm(){
+		$db = db_class()->getDriver();
+		$d_s = $db->select("info_discipline", "*");
+		$teacher_list = list2keymap($db->select("info_teacher", ['it_id']), 'it_id', 'it_id');
+		foreach($d_s as $ds_v){
+			$cus = list2keymap($db->select("info_curriculum", "*", ['ico_id' => $ds_v['ico_id']]), 'cu_id', 'cu_id');
+			$y_s = rand(2011, 2014);
+			$y_n = rand(2, 4);
+			for($j = 0; $j < $y_n; $j++){
+				foreach(array_rand($cus, rand(5, 12)) as $c_id){
+					$n_s = rand(1, 2);
+					for($k = 1; $k <= $n_s; $k++){
+						if($db->insert("mg_curriculum", [
+								'mc_year' => $y_s,
+								'mc_number' => $k,
+								'mc_grade' => $ds_v['id_time'],
+								'mc_note' => '无',
+								'id_id' => $ds_v['id_id'],
+								'ico_id' => $ds_v['ico_id'],
+								'cu_id' => $c_id,
+								'it_id' => array_rand($teacher_list)
+							]) < 1
+						){
+							print_r($db->error());
+							print_r($db);
+							return;
+						}
+					}
+				}
+				$y_s++;
 			}
 		}
 	}
@@ -1419,7 +1453,7 @@ class DataCreate extends Page{
 							'icl_id' => $icl_id,
 							'is_password' => "123456",
 							'is_email' => $this->rand(8) . "@" . $this->rand(4) . "." . $this->rand(3),
-							'is_tel' => "1" . rand(3, 8) . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999),
+							'is_tel' => "1" . rand(3, 8) . rand(100, 999) . rand(100, 999) . rand(100, 999),
 							'is_room' => $room[rand(0, 2)],
 							'is_room_number' => rand(1, 6) . "-" . sprintf("%02d", rand(1, 50)),
 							'is_study_date' => $idv['id_time'] . "-09-01",

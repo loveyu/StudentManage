@@ -60,9 +60,70 @@ class BaseInfo extends Page{
 				$this->__view("base_info/list.php", $info);
 				break;
 			case 'edit':
+				$x_info = [];
+				foreach($this->info_data[$type]['filed'] as $name => $v){
+					if(isset($v['pk'])){
+						$x_info[$name] = $this->__req->req($name);
+						if(is_null($x_info[$name])){
+							unset($x_info[$name]);
+						}
+					}
+				}
+				if(count($x_info) > 0){
+					$info['data'] = db_class()->base_info_get($this->info_data[$type]['table'], array_keys($this->info_data[$type]['filed']), $x_info);
+				} else{
+					$info['data'] = "";
+				}
 				$this->__view("base_info/edit.php", $info);
 				break;
 		}
+	}
+
+	public function edit($type = ''){
+		if(!isset($this->info_data[$type])){
+			$this->__load_404();
+			return;
+		}
+		$access = access_class();
+		if(!$access->write($type)){
+			$this->permission_deny();
+			return;
+		}
+		header("Content-Type: application/json; charset=utf-8");
+		$info = [];
+		$pk = [];
+		$rt = [
+			'status' => false,
+			'msg' => NULL
+		];
+		foreach($this->info_data[$type]['filed'] as $name => $v){
+			if(isset($v['edit']) && $v['edit']){
+				$info[$name] = $this->__req->post($name);
+			}
+			if(isset($v['pk'])){
+				$pk[$name] = $this->__req->post($name);
+			}
+		}
+		if(!count($info) || !count($pk)){
+			$rt['msg'] = "提交字段异常";
+		} else{
+			$in = [];
+			$rt['msg'] = $this->filed_check($type, $in, "edit");
+			if(!empty($rt['msg'])){
+				$rt['msg'] = "字段验证失败:" . $rt['msg'];
+			} else{
+				$i = db_class()->base_info_edit($this->info_data[$type]['table'], $info, $pk);
+				if($i === false){
+					$rt['msg'] = "编辑数据失败，请检查依赖值是否存在";
+				} elseif($i !== 1){
+					$rt['msg'] = "数据无修改";
+				} else{
+					$rt['status'] = true;
+				}
+			}
+		}
+
+		echo json_encode($rt);
 	}
 
 	public function ajax($type = ''){
@@ -109,6 +170,42 @@ class BaseInfo extends Page{
 		}
 	}
 
+	public function del($type){
+		if(!isset($this->info_data[$type])){
+			$this->__load_404();
+			return;
+		}
+		$access = access_class();
+		if(!$access->write($type)){
+			$this->permission_deny();
+			return;
+		}
+		header("Content-Type: application/json; charset=utf-8");
+
+		$info = [];
+		$rt = [
+			'status' => false,
+			'msg' => NULL
+		];
+		foreach($this->info_data[$type]['filed'] as $name => $v){
+			if(isset($v['pk'])){
+				$info[$name] = $this->__req->post($name);
+			}
+		}
+		if(!count($info)){
+			$rt['msg'] = "提交字段异常";
+		} else{
+			$i = db_class()->base_info_delete($this->info_data[$type]['table'], $info);
+			if($i !== 1){
+				$rt['msg'] = "删除数据失败，请检查依赖关系";
+			} else{
+				$rt['status'] = true;
+			}
+		}
+
+		echo json_encode($rt);
+	}
+
 	public function add($type = NULL){
 		if(!isset($this->info_data[$type])){
 			$this->__load_404();
@@ -126,68 +223,9 @@ class BaseInfo extends Page{
 			'status' => false,
 			'msg' => NULL
 		];
-		$flag = false;
-		$flag_filed = "";
-		foreach($this->info_data[$type]['filed'] as $name => $v){
-			if(isset($v['hide']) && $v['hide']){
-				continue;
-			}
-			$flag_filed = $v['name'];
-			$info[$name] = trim($this->__req->post($name));
-			$flag = false;
-			if(isset($v['rule'])){
-				if(preg_match($v['rule'], $info[$name]) != 1){
-					$flag = true;
-					break;
-				}
-			}
-			if(isset($v['check_func'])){
-				if(!call_user_func($v['check_func'], $info[$name])){
-					$flag = true;
-					break;
-				}
-			}
-			if(!$flag && isset($v['check']) && is_array($v['check'])){
-				foreach($v['check'] as $c){
-					switch($c){
-						case 'no_empty':
-						case 'not_empty':
-							if(empty($info[$name])){
-								$flag = true;
-							}
-							break;
-						case 'is_number':
-							if(!is_numeric($info[$name])){
-								$flag = true;
-							}
-							break;
-						case 'is_email':
-							if(!filter_var($info[$name], FILTER_VALIDATE_EMAIL)){
-								$flag = true;
-							}
-							break;
-						case 'is_tel':
-							if(preg_match("/^[0-9]{5,20}$/", $info[$name]) != 1){
-								$flag = true;
-							}
-							break;
-						case 'is_date':
-							if($info[$name] != date("Y-m-d", strtotime($info[$name]))){
-								$flag = true;
-							}
-							break;
-					}
-					if($flag){
-						break;
-					}
-				}
-			}
-			if($flag){
-				break;
-			}
-		}
-		if($flag){
-			$rt['msg'] = '信息检测出错:' . $flag_filed;
+		$filed_check = $this->filed_check($type, $info, "add");
+		if(!empty($filed_check)){
+			$rt['msg'] = '信息检测出错:' . $filed_check;
 		}
 		if(empty($rt['msg'])){
 			$i = db_class()->base_info_insert($this->info_data[$type]['table'], $info);
@@ -199,5 +237,70 @@ class BaseInfo extends Page{
 		}
 		echo json_encode($rt);
 
+	}
+
+	private function filed_check($type, &$info, $action_type){
+		foreach($this->info_data[$type]['filed'] as $name => $v){
+			if(isset($v['hide']) && $v['hide']){
+				continue;
+			}
+			if(!isset($v['pk'])){
+				if($action_type == "edit" && (!isset($v['edit']) || $v['edit'] == 0)){
+					continue;
+				}
+			}
+			$info[$name] = trim($this->__req->post($name));
+			$flag = false;
+			if(isset($v['rule'])){
+				if(preg_match($v['rule'], $info[$name]) != 1){
+					return $v['name'];
+				}
+			}
+			switch($action_type){
+				case "add":
+					if(isset($v['check_func'])){
+						if(!call_user_func($v['check_func'], $info[$name])){
+							return $v['name'];
+						}
+					}
+					break;
+				case "edit":
+					//将CheckFunc设置为无效
+					break;
+			}
+			if(!$flag && isset($v['check']) && is_array($v['check'])){
+				foreach($v['check'] as $c){
+					switch($c){
+						case 'no_empty':
+						case 'not_empty':
+							if(empty($info[$name])){
+								return $v['name'];
+							}
+							break;
+						case 'is_number':
+							if(!is_numeric($info[$name])){
+								return $v['name'];
+							}
+							break;
+						case 'is_email':
+							if(!filter_var($info[$name], FILTER_VALIDATE_EMAIL)){
+								return $v['name'];
+							}
+							break;
+						case 'is_tel':
+							if(preg_match("/^[0-9]{5,20}$/", $info[$name]) != 1){
+								return $v['name'];
+							}
+							break;
+						case 'is_date':
+							if($info[$name] != date("Y-m-d", strtotime($info[$name]))){
+								return $v['name'];
+							}
+							break;
+					}
+				}
+			}
+		}
+		return NULL;
 	}
 }

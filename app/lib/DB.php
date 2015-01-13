@@ -167,6 +167,18 @@ SQL;
 		return $this->driver->insert($table, $info);
 	}
 
+	public function base_info_delete($table, $info){
+		return $this->driver->delete($table, (count($info) > 1) ? ['AND' => $info] : $info);
+	}
+
+	public function base_info_get($table, $filed, $where){
+		return $this->driver->get($table, $filed, (count($where) > 1) ? ['AND' => $where] : $where);
+	}
+
+	public function base_info_edit($table, $filed, $where){
+		return $this->driver->update($table, $filed, (count($where) > 1) ? ['AND' => $where] : $where);
+	}
+
 	public function get_campus_list(){
 		return $this->driver->select('info_campus', "*");
 	}
@@ -192,6 +204,10 @@ SQL;
 			'ico_id',
 			'ico_name'
 		], ['ico_id' => $ids]);
+	}
+
+	public function get_class_info($ids){
+		return $this->driver->select("info_class", "*", ['icl_id' => $ids]);
 	}
 
 	public function get_college_names_and_campus($ids){
