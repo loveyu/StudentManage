@@ -191,12 +191,104 @@ SQL;
 		]);
 	}
 
+	/**
+	 * 为对应专业和课程插入数据
+	 * @param $id_id
+	 * @param $mc_id
+	 * @return bool|int
+	 */
+	public function insert_mc_id_list($id_id, $mc_id){
+		$stmt = $this->driver->getWriter()->prepare("INSERT INTO scores(mc_id,is_id)
+	(
+		SELECT
+			mg_curriculum.mc_id,
+			info_student.is_id
+		FROM
+			mg_curriculum
+		INNER JOIN info_student ON mg_curriculum.id_id = info_student.id_id
+		WHERE
+			mg_curriculum.id_id = :id_id
+		AND mg_curriculum.mc_id = :mc_id
+	)");
+		if($stmt->execute([
+			':id_id' => $id_id,
+			':mc_id' => $mc_id
+		])
+		){
+			$r = $stmt->rowCount();
+		} else{
+			$r = false;
+		}
+		$stmt->closeCursor();
+		return $r;
+	}
+
+	/**
+	 * 为对应专业和课程插入数据
+	 * @param $id_id
+	 * @param $mc_id
+	 * @param $icl_id
+	 * @return bool|int
+	 */
+	public function insert_mc_id_class_list($id_id, $mc_id, $icl_id){
+		$stmt = $this->driver->getWriter()->prepare("INSERT INTO scores (mc_id, is_id)(
+	SELECT
+		mg_curriculum.mc_id,
+		info_student.is_id
+	FROM
+		info_class
+	INNER JOIN info_student ON info_class.icl_id = info_student.icl_id
+	INNER JOIN mg_curriculum ON info_class.id_id =mg_curriculum.id_id
+	WHERE
+		mg_curriculum.id_id = :id_id
+	AND mg_curriculum.mc_id = :mc_id
+	AND info_class.icl_id = :icl_id
+)");
+		if($stmt->execute([
+			':id_id' => $id_id,
+			':mc_id' => $mc_id,
+			':icl_id' => $icl_id,
+		])
+		){
+			$r = $stmt->rowCount();
+		} else{
+			$r = false;
+		}
+		$stmt->closeCursor();
+		return $r;
+	}
+
 	public function check_campus_name($name){
 		return $this->driver->has('info_campus', ['ic_name' => $name]);
 	}
 
 	public function check_college_id($id){
 		return $this->driver->has('info_college', ['ico_id' => $id]);
+	}
+
+
+	/**
+	 * 检测某一专业是否有某一课程
+	 * @param $id_id
+	 * @param $mc_id
+	 * @return bool
+	 */
+	public function check_mg_id_exists($id_id, $mc_id){
+		return $this->driver->has("mg_curriculum", [
+			'AND' => [
+				'id_id' => $id_id,
+				'mc_id' => $mc_id
+			]
+		]);
+	}
+
+	public function check_class_exists($id_id, $icl_id){
+		return $this->driver->has("info_class", [
+			'AND' => [
+				'id_id' => $id_id,
+				'icl_id' => $icl_id
+			]
+		]);
 	}
 
 	public function get_college_names($ids){

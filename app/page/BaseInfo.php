@@ -128,6 +128,11 @@ class BaseInfo extends Page{
 
 	public function ajax($type = ''){
 		header("Content-Type: application/json; charset=utf-8");
+		$access = access_class();
+		if(!$access->read("base_info_ajax")){
+			$this->permission_deny();
+			return;
+		}
 		$db = db_class()->getDriver();
 		$id = $this->__req->get('id');
 		$t = $this->__req->get('t');
@@ -166,6 +171,9 @@ class BaseInfo extends Page{
 					"cu_id",
 					'cu_name'
 				], ['ico_id' => $id]), "cu_id", 'cu_name'));
+				break;
+			default:
+				echo ['msg'=>'未定义内容','status'=>false];
 				break;
 		}
 	}

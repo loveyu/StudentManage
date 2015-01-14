@@ -19,7 +19,9 @@ $row = isset($__info['row']) ? $__info['row'] : 0;
 					echo "<div class='row'>";
 				} ?>
 				<div class="form-group<?php echo ($row > 0) ? (" col-md-" . (12 / $row)) : "" ?>">
-					<label class="control-label" for="ID_<?php echo $name ?>"><?php echo $v['name'] ?></label>
+					<label class="control-label sr-only" for="ID_<?php echo $name ?>"><?php echo $v['name'] ?></label>
+					<div class="input-group">
+						<div class="input-group-addon"><?php echo $v['name'] ?></div>
 					<?php switch($v['type']){
 						case "text":
 							?>
@@ -38,14 +40,16 @@ $row = isset($__info['row']) ? $__info['row'] : 0;
 							<?php
 							break;
 						case "radio":
-							echo " : &nbsp;&nbsp;";
+							echo "<div class=\"form-control\">";
 							foreach($v['radio'] as $rn => $rv):?>
 								<label><input value="<?php echo $rn?>" type='radio' name='<?php echo $name ?>'> <?php echo $rv?>
 								</label>&nbsp;&nbsp;&nbsp;
 							<?php
 							endforeach;
+							echo "</div>";
 							break;
 					} ?>
+				</div>
 				</div>
 				<?php
 				if($row > 0 && ($i % $row) === 0){

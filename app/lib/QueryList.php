@@ -57,7 +57,7 @@ class QueryList{
 
 
 	public function search_value($name){
-		return req()->get($name);
+		return htmlspecialchars(req()->get($name));
 	}
 
 	/**

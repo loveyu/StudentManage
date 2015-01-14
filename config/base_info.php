@@ -565,6 +565,16 @@ return [
 				'type' => 'select',
 				'list' => array_number_dd(date('Y'), 1998, true)
 			],
+			'id_id' => [
+				'name' => '专业',
+				'type' => 'text',
+				'size' => 10,
+			],
+			'icl_id' => [
+				'name' => '班级ID',
+				'type' => 'text',
+				'size' => 10,
+			],
 			'is_hometown' => [
 				'name' => '籍贯',
 				'type' => 'text',
@@ -920,7 +930,7 @@ return [
 	'scores_mg' => [
 		'name' => '选课管理',
 		'table' => 'scores',
-		'full_check'=>'scores_full_check',
+		'full_check' => 'scores_full_check',
 		'search' => [
 			'is_id' => [
 				'name' => '学号',

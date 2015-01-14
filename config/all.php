@@ -132,6 +132,14 @@ return [
 		],
 		[
 			'url' => [
+				'Scores',
+				'add'
+			],
+			'name' => '批量选课',
+			'access' => 'scores_add',
+		],
+		[
+			'url' => [
 				'Home',
 				'logout'
 			],

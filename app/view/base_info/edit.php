@@ -27,46 +27,51 @@ if(!is_array($__data)){
 					echo "<div class='row'>";
 				} ?>
 				<div class="form-group<?php echo ($row > 0) ? (" col-md-" . (12 / $row)) : "" ?>">
-					<label class="control-label" for="ID_<?php echo $name ?>"><?php echo $v['name'] ?></label>
-					<?php
-					if(isset($v['edit_type'])){
-						$v['type'] = $v['edit_type'];
-					}
-					$show_value = isset($__data[$name]) ? $__data[$name] : "";
-					if(isset($v['edit_value_call'])){
-						$show_value = $v['edit_value_call']($show_value);
-					}
-					switch($v['type']){
-						case "text":
-							?>
-							<input <?php echo $filed_status;?>class="form-control" type="<?php echo isset($v['vt']) ? $v['vt'] : "text"?>"
-								   name="<?php echo $name?>"
-								   value="<?php echo $show_value?>" id="ID_<?php echo $name ?>">
-							<?php break;
-						case "select": ?>
-							<select <?php echo $filed_status; ?> class="form-control" id="ID_<?php echo $name ?>" name="<?php echo $name ?>">
-								<option value="">--下拉选择--</option>
-								<?php echo html_option(isset($v['select_func']) ? call_user_func($v['select_func']) : (isset($v['select_list']) ? $v['select_list'] : []), $show_value) ?>
-							</select>
-							<?php
-							break;
-						case "textarea": ?>
-							<textarea <?php echo $filed_status; ?> class="form-control" id="ID_<?php echo $name ?>"
-																   name="<?php echo $name ?>"><?php echo htmlentities($show_value) ?></textarea>
-							<?php
-							break;
-						case "radio":
-							echo " : &nbsp;&nbsp;";
-							foreach($v['radio'] as $rn => $rv):
-								$selected = $rn == $show_value ? " checked " : "";
+					<label class="control-label sr-only" for="ID_<?php echo $name ?>"><?php echo $v['name'] ?></label>
+
+					<div class="input-group">
+						<div class="input-group-addon"><?php echo $v['name'] ?></div>
+						<?php
+						if(isset($v['edit_type'])){
+							$v['type'] = $v['edit_type'];
+						}
+						$show_value = isset($__data[$name]) ? $__data[$name] : "";
+						if(isset($v['edit_value_call'])){
+							$show_value = $v['edit_value_call']($show_value);
+						}
+						switch($v['type']){
+							case "text":
 								?>
-								<label><input<?php echo $filed_status, $selected;?> value="<?php echo $rn?>" type='radio'
-																					name='<?php echo $name ?>'> <?php echo $rv?>
-								</label>&nbsp;&nbsp;&nbsp;
-							<?php
-							endforeach;
-							break;
-					} ?>
+								<input <?php echo $filed_status;?>class="form-control" type="<?php echo isset($v['vt']) ? $v['vt'] : "text"?>"
+									   name="<?php echo $name?>"
+									   value="<?php echo $show_value?>" id="ID_<?php echo $name ?>">
+								<?php break;
+							case "select": ?>
+								<select <?php echo $filed_status; ?> class="form-control" id="ID_<?php echo $name ?>" name="<?php echo $name ?>">
+									<option value="">--下拉选择--</option>
+									<?php echo html_option(isset($v['select_func']) ? call_user_func($v['select_func']) : (isset($v['select_list']) ? $v['select_list'] : []), $show_value) ?>
+								</select>
+								<?php
+								break;
+							case "textarea": ?>
+								<textarea <?php echo $filed_status; ?> class="form-control" id="ID_<?php echo $name ?>"
+																	   name="<?php echo $name ?>"><?php echo htmlentities($show_value) ?></textarea>
+								<?php
+								break;
+							case "radio":
+								echo "<div class=\"form-control\">";
+								foreach($v['radio'] as $rn => $rv):
+									$selected = $rn == $show_value ? " checked " : "";
+									?>
+									<label><input<?php echo $filed_status, $selected;?> value="<?php echo $rn?>" type='radio'
+																						name='<?php echo $name ?>'> <?php echo $rv?>
+									</label>&nbsp;&nbsp;&nbsp;
+								<?php
+								endforeach;
+								echo "</div>";
+								break;
+						} ?>
+					</div>
 				</div>
 				<?php
 				if($row > 0 && ($i % $row) === 0){
