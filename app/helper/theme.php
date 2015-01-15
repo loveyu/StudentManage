@@ -138,6 +138,30 @@ function html_option($value_list, $select){
 	return $rt;
 }
 
+function html_radio($list,$name,$checked,$default=NULL,$before=NULL,$end=NULL){
+	$ck = [];
+	foreach(array_keys($list) as $v){
+		if($v==$checked){
+			$ck[$v] = true;
+		}
+	}
+	if(empty($ck)){
+		if(!empty($default)){
+			$ck[$default] = true;
+		}
+	}
+	$out = "";
+	foreach($list as $n => $v){
+		if(isset($ck[$n]) && $ck[$n]){
+			$chk = " checked ";
+		}else{
+			$chk = "";
+		}
+		$out.=$before."<input type=\"radio\" name=\"$name\" value=\"$n\"$chk>$v".$end;
+	}
+	return $out;
+}
+
 /**
  * 权限状态信息
  * @param $arr

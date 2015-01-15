@@ -36,12 +36,27 @@ class Home extends Page{
 	public function login(){
 		$msg = "";
 		if($this->__req->is_post()){
-			$msg = login_class()->login($this->__req->post('user_name'), $this->__req->post('user_pwd'));
+			$user = $this->__req->post('user_name');
+			$pwd = $this->__req->post('user_pwd');
+			switch($this->__req->post('login_type')){
+				case "student":
+					$msg = login_class()->student_login($user, $pwd);
+					break;
+				case "teacher":
+					$msg = login_class()->teacher_login($user, $pwd);
+					break;
+				case "admin":
+					$msg = login_class()->login($user, $pwd);
+					break;
+				default:
+					$msg = "未知登录类型";
+					break;
+			}
 			if($msg === true){
 				redirect('');
 			}
 		}
-		$this->setTitle("管理员登录");
+		$this->setTitle("后台登录");
 		$this->__view("home/login.php", ['msg' => $msg]);
 	}
 

@@ -46,6 +46,14 @@ class DB{
 		return $this->driver->get("admin", "*", ['a_id' => $id]);
 	}
 
+	public function get_student_info_by_id($is_id){
+		return $this->driver->get("info_student", "*", ['is_id' => $is_id]);
+	}
+
+	public function get_teacher_info_by_id($it_id){
+		return $this->driver->get("info_teacher", "*", ['it_id' => $it_id]);
+	}
+
 	public function check_permission_exists($name){
 		return $this->driver->has("permission", ['p_name' => $name]);
 	}
@@ -81,8 +89,26 @@ class DB{
 	public function get_access($name){
 		$role = NULL;
 		$read = $this->driver->getReader();
-		$p = $read->prepare("select role.r_id as id,role.r_name as name,role.r_status as status from role INNER JOIN admin on admin.r_id = role.r_id WHERE admin.a_name=:uname");
+		$p = $read->prepare("SELECT
+	role.r_id AS id,
+	role.r_name AS `name`,
+	role.r_status AS `status`
+FROM
+	role
+INNER JOIN admin ON admin.r_id = role.r_id
+WHERE
+admin.a_name = :uname");
 		if($p->execute([':uname' => $name])){
+			$role = $p->fetchAll(\PDO::FETCH_ASSOC)[0];
+		}
+		return compact('role');
+	}
+
+	public function get_access_by_role_id($r_id){
+		$role = NULL;
+		$read = $this->driver->getReader();
+		$p = $read->prepare("select role.r_id as id,role.r_name as name,role.r_status as status from role where role.r_id=:r_id");
+		if($p->execute([':r_id' => intval($r_id)])){
 			$role = $p->fetchAll(\PDO::FETCH_ASSOC)[0];
 		}
 		return compact('role');
@@ -156,6 +182,28 @@ AND r_status = 0;
 SQL;
 		$stmt = $this->driver->getReader()->prepare($SQL);
 		$stmt->bindValue(":aid", $aid);
+		if($stmt->execute()){
+			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		}
+		return false;
+	}
+
+	public function get_role_allow_access($rid){
+		$SQL = <<<SQL
+SELECT
+	ac_r as r,
+	ac_w as w,
+	p_name as name
+FROM
+	access
+INNER JOIN role ON role.r_id = access.r_id
+INNER JOIN permission ON permission.p_id = access.p_id
+WHERE
+	role.r_id = :rid
+AND r_status = 0;
+SQL;
+		$stmt = $this->driver->getReader()->prepare($SQL);
+		$stmt->bindValue(":rid", $rid);
 		if($stmt->execute()){
 			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 		}

@@ -28,6 +28,11 @@ class Login{
 	 */
 	private $user_info;
 
+	/**
+	 * @var string
+	 */
+	private $login_type;
+
 	function __construct(){
 		$this->status = false;
 		$this->db = db_class();
@@ -35,31 +40,64 @@ class Login{
 		$this->auto_login();
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getLoginType(){
+		return $this->login_type;
+	}
+
 	public function auto_login(){
-		$this->user_info = $this->session->get('admin');
-		foreach([
-			'id',
-			'name',
-			'role_id',
-			'ip',
-			'ip_list',
-			'status'
-		] as $v){
-			if(!isset($this->user_info[$v])){
-				return;
-			}
+		$this->login_type = $this->session->get("login_type");
+		switch($this->login_type){
+			case "admin":
+				$this->user_info = $this->session->get('admin');
+				foreach([
+					'id',
+					'name',
+					'role_id',
+					'ip',
+					'ip_list',
+					'status'
+				] as $v){
+					if(!isset($this->user_info[$v])){
+						return;
+					}
+				}
+				$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : NULL;
+				if($ip !== $this->user_info['ip']){
+					return;
+				}
+				if(!$this->ip_filter($this->user_info['ip_list'], $ip)){
+					return;
+				}
+				if($this->status == 1){
+					return;
+				}
+				$this->status = true;
+				break;
+			case "teacher":
+				$this->user_info = $this->session->get("teacher");
+				if(isset($this->user_info['it_id']) && $this->user_info['it_id']){
+					$this->user_info['role_id'] = cfg()->get('teacher_role');
+					$this->user_info['name'] = $this->user_info['it_name'];
+					$this->user_info['id'] = $this->user_info['it_id'];
+					$this->user_info['status'] = 0;
+					$this->status = true;
+				}
+				break;
+			case "student":
+				$this->user_info = $this->session->get("student");
+				if(isset($this->user_info['is_id']) && $this->user_info['is_id']){
+					$this->user_info['role_id'] = cfg()->get('student_role');
+					$this->user_info['name'] = $this->user_info['is_name'];
+					$this->user_info['id'] = $this->user_info['is_id'];
+					$this->user_info['status'] = 0;
+					$this->status = true;
+				}
+				break;
 		}
-		$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : NULL;
-		if($ip !== $this->user_info['ip']){
-			return;
-		}
-		if(!$this->ip_filter($this->user_info['ip_list'], $ip)){
-			return;
-		}
-		if($this->status == 1){
-			return;
-		}
-		$this->status = true;
+		$this->user_info['login_type'] = $this->login_type;
 	}
 
 	public function edit_pwd($old, $new){
@@ -98,11 +136,54 @@ class Login{
 
 	public function detail(){
 		if($this->status){
-			$this->db = db_class();
-			$access = $this->db->get_access($this->user_info['name']);
-			return array_merge($access, ['user' => $this->user_info]);
+			switch($this->login_type){
+				case "admin":
+					$this->db = db_class();
+					$access = $this->db->get_access($this->user_info['name']);
+					return array_merge($access, ['user' => $this->user_info]);
+				case "teacher":
+				case "student":
+					$this->db = db_class();
+					return array_merge($this->db->get_access_by_role_id($this->user_info['role_id']), ['user' => $this->user_info]);
+			}
 		}
 		return NULL;
+	}
+
+	public function student_login($is_id, $is_password){
+		$is_id = trim($is_id);
+		$is_password = trim($is_password);
+		$info = $this->db->get_student_info_by_id($is_id);
+		if(isset($info['is_id']) && $info['is_id'] == $is_id){
+			if($is_password != $info['is_password']){
+				return "密码错误";
+			} else{
+				$this->session->set("login_type", "student");
+				$this->session->set("student", $info);
+				$this->status = true;
+				return true;
+			}
+		} else{
+			return "用户不存在";
+		}
+	}
+
+	public function teacher_login($it_id, $it_password){
+		$it_id = trim($it_id);
+		$it_password = trim($it_password);
+		$info = $this->db->get_teacher_info_by_id($it_id);
+		if(isset($info['it_id']) && $info['it_id'] == $it_id){
+			if($it_password != $info['it_password']){
+				return "密码错误";
+			} else{
+				$this->session->set("login_type", "teacher");
+				$this->session->set("teacher", $info);
+				$this->status = true;
+				return true;
+			}
+		} else{
+			return "用户不存在";
+		}
 	}
 
 	public function login($user, $password){
@@ -141,6 +222,7 @@ class Login{
 			'ip_list' => $info['a_ip']
 		];
 		$this->session->set('admin', $this->user_info);
+		$this->session->set("login_type", "admin");
 	}
 
 	private function ip_filter(&$list, $ip){

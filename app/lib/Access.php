@@ -14,8 +14,20 @@ class Access{
 	function __construct(){
 		$login = login_class();
 		if($login->is_login()){
-			$list = db_class()->get_admin_allow_access($login->uid());
-			$this->table = list2keymap($list,'name',['r','w']);
+			$list = [];
+			switch($login->getLoginType()){
+				case "admin":
+					$list = db_class()->get_admin_allow_access($login->uid());
+					break;
+				case "teacher":
+				case "student":
+					$list=db_class()->get_role_allow_access($login->role_id());
+					break;
+			}
+			$this->table = list2keymap($list, 'name', [
+				'r',
+				'w'
+			]);
 		}
 	}
 

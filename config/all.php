@@ -12,6 +12,8 @@ return [
 					  PDO::ATTR_TIMEOUT => 5
 		]
 	],
+	'student_role' => 3,
+	'teacher_role' => 4,
 	'menu' => [
 		[
 			'url' => [],
