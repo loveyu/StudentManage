@@ -11,6 +11,45 @@ namespace UView;
 use ULib\Page;
 
 class Scores extends Page{
+	public function my_list(){
+		$access = access_class();
+		if(login_class()->is_login() && login_class()->getLoginType() == "student" && !$access->read("my_curriculum")){
+			$this->permission_deny();
+			return;
+		}
+		$this->__view("scores/my_list.php");
+	}
+
+	public function get_ajax(){
+		$access = access_class();
+		if(login_class()->is_login() && login_class()->getLoginType() == "student" && !$access->read("my_curriculum")){
+			$this->permission_deny();
+			return;
+		}
+		header("Content-Type: application/json; charset=utf-8");
+		$mc_grade = $this->__req->post('mc_grade');
+		$mc_number = $this->__req->post('mc_number');
+		$info = [];
+		if(!empty($mc_number)){
+			$info['mc_number'] = $mc_number;
+		}
+		if(!empty($mc_grade)){
+			$info['mc_grade'] = $mc_grade;
+		}
+		$list = db_class()->student_scores(login_class()->uid(), $info);
+		if($list !== false){
+			echo json_encode([
+				'status' => true,
+				'msg' => $list
+			]);
+		} else{
+			echo json_encode([
+				'status' => false,
+				'msg' => '查询失败'
+			]);
+		}
+	}
+
 	public function add(){
 		$access = access_class();
 		if(!$access->write("scores_add")){

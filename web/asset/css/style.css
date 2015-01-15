@@ -96,3 +96,11 @@ h4.not_found {
 	border: 1px solid #999;
 	border-radius: 2px;
 }
+
+.not-found-404{
+	max-width: 400px;
+	margin: 100px auto 0 auto;
+	background: #eee;
+	padding: 20px;
+	border-left: 10px solid #555;
+}

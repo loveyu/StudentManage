@@ -1469,6 +1469,41 @@ class DataCreate extends Page{
 		}
 	}
 
+	public function rename_is_name(){
+		set_time_limit(0);
+		$db = db_class()->getDriver();
+		$ids = $db->select("mg_curriculum", ['mc_id','id_id']);
+		foreach($ids as $v){
+			echo $v['mc_id']."\t".$v['id_id']."\n";
+		}
+//		$dt = [];
+//		$dt2 = [];
+//		$dt3 = [];
+//		foreach($ids as $v){
+//			$b = [];
+//			$b[0] = sprintf("%02d", rand(1990, 1996));
+//			$b[1] = sprintf("%02d", rand(1, 12));
+//			$b[2] = sprintf("%02d", rand(1, 28));
+//			$info = [
+//				'is_name' => $this->name_list[array_rand($this->name_list)] . $this->name_list2[array_rand($this->name_list2)] . $this->name_list2[array_rand($this->name_list2)],
+//				'is_birthday' => $b[0] . "-" . $b[1] . "-" . $b[2],
+//				'is_id_card' => rand(100, 999) . '0' . rand(1, 9) . '1' . implode("", $b) . rand(1000, 9999),
+//			];
+//			$dt[$info['is_name']] = "";
+//			$dt2[$info['is_birthday']] = "";
+//			$dt3[$info['is_id_card']] = "";
+//			//$db->update("info_student", $info, ['is_id' => $v['is_id']]);
+//			//print_r($info);
+//		}
+//		echo count($dt);
+//		echo count($dt2);
+//		echo count($dt3);
+	}
+
+	public function add_all_scores(){
+
+	}
+
 	private function rand($length = 40){
 		$str = "abcdefghijklmnopqretuvwxyz0123456789";
 		$rt = "a";

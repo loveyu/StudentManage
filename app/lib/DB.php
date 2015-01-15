@@ -210,6 +210,37 @@ SQL;
 		return false;
 	}
 
+	public function student_scores($is_id, $info = []){
+		$sql = <<<SQL
+SELECT
+	scores.*, mg_curriculum.mc_grade,
+	mg_curriculum.mc_number,
+	info_teacher.it_id,
+	info_teacher.it_name,
+	info_curriculum.cu_id,
+	info_curriculum.cu_name,
+	info_curriculum.cu_point,
+	info_curriculum.cu_time
+FROM
+	scores
+INNER JOIN mg_curriculum ON mg_curriculum.mc_id = scores.mc_id
+INNER JOIN info_curriculum ON mg_curriculum.cu_id = info_curriculum.cu_id
+INNER JOIN info_teacher ON info_teacher.it_id = mg_curriculum.it_id
+WHERE
+	is_id = :is_id
+SQL;
+		$r = [];
+		foreach($info as $n => $v){
+			$sql .= " AND $n=:$n";
+			$r[":{$n}"] = $v;
+		}
+		$r[':is_id'] = $is_id;
+		$stmt = $this->driver->getReader()->prepare($sql);
+		if($stmt->execute($r)){
+			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		}
+		return false;
+	}
 
 	public function base_info_insert($table, $info){
 		return $this->driver->insert($table, $info);

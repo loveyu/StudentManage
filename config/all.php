@@ -142,6 +142,14 @@ return [
 		],
 		[
 			'url' => [
+				'Scores',
+				'my_list'
+			],
+			'name' => '个人课程',
+			'access' => 'my_curriculum',
+		],
+		[
+			'url' => [
 				'Home',
 				'logout'
 			],

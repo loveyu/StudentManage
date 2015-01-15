@@ -550,6 +550,12 @@ return [
 				'type' => 'text',
 				'size' => 10
 			],
+			'is_name' => [
+				'name' => '姓名',
+				'type' => 'text',
+				'like' => 1,
+				'size' => 6
+			],
 			'ico_id' => [
 				'name' => '学院',
 				'type' => 'select',
