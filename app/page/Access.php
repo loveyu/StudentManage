@@ -13,6 +13,12 @@ use ULib\Page;
 class Access extends Page{
 	function __construct(){
 		parent::__construct();
+		if(!login_class()->is_login()){
+			redirect([
+				'Home',
+				'login'
+			]);
+		}
 	}
 
 	public function role(){

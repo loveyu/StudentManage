@@ -3,8 +3,19 @@
  * @var $this \UView\Scores
  */
 $this->get_header(); ?>
-	<h1>查询我的选课表和成绩</h1>
-	<form class="form-inline" method="post" action="<?php echo get_url('Scores', 'get_ajax') ?>?type=student">
+	<h1>查询我的课程教学表</h1>
+	<form class="form-inline" method="post" action="<?php echo get_url('Scores', 'get_ajax') ?>?type=teacher">
+		<div class="form-group">
+			<label class="sr-only" for="ID_mc_grade">年级</label>
+
+			<div class="input-group">
+				<div class="input-group-addon">年级</div>
+				<select name="mc_grade" class="form-control" id="ID_mc_grade">
+					<option value="">全部</option>
+					<?php echo html_option(array_number_dd(date("Y"), 2001, true), date("Y")-1) ?>
+				</select>
+			</div>
+		</div>
 		<div class="form-group">
 			<label class="sr-only" for="ID_mc_year">学年</label>
 
@@ -34,15 +45,16 @@ $this->get_header(); ?>
 	<table id="Scores_table" class="table table-striped  table-hover" style="display: none;">
 		<thead>
 		<tr>
+			<th><label class="glyphicon glyphicon-pencil"></label></th>
 			<th>课程</th>
-			<th>老师</th>
-			<th>年份</th>
+			<th>学年</th>
 			<th>学期</th>
 			<th>学分</th>
 			<th>学时</th>
-			<th>平时成绩</th>
-			<th>考试成绩</th>
-			<th>总分</th>
+			<th>专业</th>
+			<th>年级</th>
+			<th>学院</th>
+			<th>校区</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -59,10 +71,10 @@ $this->get_header(); ?>
 						var obj = $("#Scores_table tbody");
 						for (var i = 0; i < data.msg.length; i++) {
 							var x = data.msg[i];
-							obj.append("<tr><td>["+ x.mc_id+"]" + x.cu_name + "</td><td>["+ x.it_id+"]" + x.it_name + "</td>" +
-							"<td>" + x.mc_year + "</td><td>" + x.mc_number + "</td>" +
+							obj.append("<tr><td><a href='#' class='btn btn-sm btn-primary' onclick='return fs(\""+ x.mc_id+"\")'>登分</a></td><td>["+ x.mc_id+"]" + x.cu_name + "</td><td>"+x.mc_year+"</td><td>"+x.mc_number+"</td>"+
 							"<td>" + x.cu_point + "</td><td>" + x.cu_time + "</td>" +
-							"<td>" + x.sc_work + "</td><td>" + x.sc_test + "</td><td>" + x.sc_total + "</td></tr>");
+							"<td>" + x.id_name + "</td><td>" + x.mc_grade + "</td>" +
+							"<td>" + x.ico_name + "</td><td>" + x.ic_name + "</td></tr>");
 						}
 						$("#Scores_table").show();
 					}
@@ -71,6 +83,10 @@ $this->get_header(); ?>
 				}
 			})
 		});
+		function fs(id){
+			location.href = "<?php echo get_url('Scores','teacher_add_scores')?>?id="+id;
+			return false;
+		}
 	</script>
 
 <?php

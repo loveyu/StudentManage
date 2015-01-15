@@ -13,6 +13,12 @@ use ULib\Page;
 class Profile extends Page{
 	function __construct(){
 		parent::__construct();
+		if(!login_class()->is_login()){
+			redirect([
+				'Home',
+				'login'
+			]);
+		}
 	}
 
 	function edit_pwd(){

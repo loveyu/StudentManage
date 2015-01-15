@@ -16,6 +16,12 @@ class BaseInfo extends Page{
 	function __construct(){
 		parent::__construct();
 		$this->info_data = cfg()->load(_RootPath_ . "/config/base_info.php");
+		if(!login_class()->is_login()){
+			redirect([
+				'Home',
+				'login'
+			]);
+		}
 	}
 
 

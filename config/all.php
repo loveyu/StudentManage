@@ -150,6 +150,22 @@ return [
 		],
 		[
 			'url' => [
+				'Scores',
+				'teacher_list'
+			],
+			'name' => '教师课程',
+			'access' => 'teacher_curriculum'
+		],
+		[
+			'url' => [
+				'Scores',
+				'teacher_add_scores'
+			],
+			'name' => '课程成绩添加',
+			'access' => 'teacher_add_scores'
+		],
+		[
+			'url' => [
 				'Home',
 				'logout'
 			],

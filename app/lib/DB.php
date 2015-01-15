@@ -210,10 +210,56 @@ SQL;
 		return false;
 	}
 
+	public function check_mc_id_is_teacher($mc_id, $it_id){
+		return $this->driver->has("mg_curriculum", ['AND' => compact('mc_id', 'it_id')]);
+	}
+
+	public function get_scores_student_list($mc_id){
+		$stmt = $this->driver->query("SELECT
+	`scores`.`mc_id`,
+	`scores`.`is_id`,
+	`scores`.`sc_work`,
+	`scores`.`sc_test`,
+	`scores`.`sc_total`,
+	`info_student`.`is_name`,
+	`info_class`.`icl_number`,
+	`info_discipline`.`id_name`
+FROM
+	`scores`
+INNER JOIN `info_student` ON `scores`.`is_id` = `info_student`.`is_id`
+INNER JOIN `info_class` ON `info_class`.`icl_id` = `info_student`.`icl_id`
+INNER JOIN `info_discipline` ON `info_discipline`.`id_id` = `info_student`.`id_id`
+WHERE
+	`mc_id` = " . intval($mc_id));
+		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+	}
+
+	public function get_curriculum_info_by_mc_id($mc_id){
+		$stmt = $this->driver->query("SELECT
+	cu_name,
+	ic_name,
+	ico_name,
+	id_name,
+	mc_grade,
+	mc_number,
+	mc_id,
+	mc_year
+FROM
+	mg_curriculum
+INNER JOIN info_curriculum ON mg_curriculum.cu_id = info_curriculum.cu_id
+INNER JOIN info_discipline ON mg_curriculum.id_id = info_discipline.id_id
+INNER JOIN info_college ON mg_curriculum.ico_id = info_college.ico_id
+WHERE
+	mc_id = " . intval($mc_id));
+		$rt = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		$stmt->closeCursor();
+		return isset($rt[0]) ? $rt[0] : NULL;
+	}
+
 	public function student_scores($is_id, $info = []){
 		$sql = <<<SQL
 SELECT
-	scores.*, mg_curriculum.mc_grade,
+	scores.*, mg_curriculum.mc_year,
 	mg_curriculum.mc_number,
 	info_teacher.it_id,
 	info_teacher.it_name,
@@ -235,6 +281,41 @@ SQL;
 			$r[":{$n}"] = $v;
 		}
 		$r[':is_id'] = $is_id;
+		$stmt = $this->driver->getReader()->prepare($sql);
+		if($stmt->execute($r)){
+			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		}
+		return false;
+	}
+
+	public function teacher_curriculum($it_id, $info = []){
+		$sql = <<<SQL
+SELECT
+	mg_curriculum.mc_id,
+	mg_curriculum.mc_grade,
+	mg_curriculum.mc_number,
+	mg_curriculum.mc_year,
+	info_curriculum.cu_name,
+	info_curriculum.cu_point,
+	info_curriculum.cu_time,
+	info_curriculum.cu_book,
+	info_college.ico_name,
+	info_discipline.id_name,
+	info_college.ic_name
+FROM
+	mg_curriculum
+INNER JOIN info_curriculum ON info_curriculum.cu_id = mg_curriculum.cu_id
+INNER JOIN info_college ON info_college.ico_id = mg_curriculum.ico_id
+INNER JOIN info_discipline ON info_discipline.id_id = mg_curriculum.id_id
+WHERE
+	it_id = :it_id
+SQL;
+		$r = [];
+		foreach($info as $n => $v){
+			$sql .= " AND $n=:$n";
+			$r[":{$n}"] = $v;
+		}
+		$r[':it_id'] = $it_id;
 		$stmt = $this->driver->getReader()->prepare($sql);
 		if($stmt->execute($r)){
 			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
