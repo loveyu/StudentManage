@@ -2,6 +2,7 @@
 /**
  * @var $this          \UView\Home
  * @var $__role_access array
+ * @var $__filed       array
  */
 $detail = $this->get_user_detail();
 $this->get_header();
@@ -10,19 +11,32 @@ $this->get_header();
 	<dl class="dl-horizontal user-info">
 		<dt>基本信息</dt>
 		<dd>
-			<strong><?php echo $detail['user']['name'] ?></strong>[<?php echo $detail['user']['id']?>]<i>(<?php echo user_status($detail['user']['status']) ?>
+			<strong><?php echo $detail['user']['name'] ?></strong>[<?php echo $detail['user']['id'] ?>
+			]<i>(<?php echo user_status($detail['user']['status']) ?>
 				)</i>，<?php echo role_info($detail['role']) ?>
 		</dd>
-		<?php if($detail['user']['login_type'] == "admin"): ?>
-			<dt>当前IP</dt>
-			<dd><?php echo $detail['user']['ip'] ?></dd>
-			<dt>允许IP</dt>
-			<dd><p><?php echo implode("<br />", $detail['user']['ip_list']) ?></p></dd>
-		<?php endif; ?>
-			<dt>&nbsp;</dt>
-			<dd>
-				<button id="EditPassword" type="button" class="btn btn-warning">修改密码</button>
-			</dd>
+		<?php switch($detail['user']['login_type']){
+			case "admin":
+				?>
+				<dt>当前IP</dt>
+				<dd><?php echo $detail['user']['ip'] ?></dd>
+				<dt>允许IP</dt>
+				<dd><p><?php echo implode("<br />", $detail['user']['ip_list']) ?></p></dd>
+				<?php
+				break;
+			case "student":
+			case "teacher":
+				foreach($__filed as $n=>$v){
+					if((isset($v['no_out']) && $v['no_out']) || !isset($detail['user'][$n]))continue;
+					echo "<dt>{$v['name']}</dt>";
+					echo "<dd>{$detail['user'][$n]}</dd>";
+				}
+				break;
+		} ?>
+		<dt>&nbsp;</dt>
+		<dd>
+			<button id="EditPassword" type="button" class="btn btn-warning">修改密码</button>
+		</dd>
 		<?php if(!empty($__role_access)): ?>
 			<dt>权限列表</dt>
 			<dd style="line-height: 2.5;vertical-align: top"><?php foreach($__role_access as $v): ?>

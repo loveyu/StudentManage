@@ -19,15 +19,25 @@ class Home extends Page{
 				'login'
 			]);
 		}
+		$cgf = cfg();
 		$this->setTitle("管理");
-		$this->__view("home/main.php", [
-			'role_access' => list2keymap(db_class()->get_role_access_and_name(login_class()->role_id()), "p_id", [
-				'ac_w',
-				'p_name',
-				'p_alias',
-				'ac_r'
-			])
+		switch(login_class()->getLoginType()){
+			case "teacher":
+				$cgf->load(_RootPath_ . "/config/base_info.php");
+				$filed = $cgf->get('teacher_info','filed');
+				break;
+			case "student":
+				$cgf->load(_RootPath_ . "/config/base_info.php");
+				$filed = $cgf->get('student_info','filed');
+				break;
+		}
+		$role_access = list2keymap(db_class()->get_role_access_and_name(login_class()->role_id()), "p_id", [
+			'ac_w',
+			'p_name',
+			'p_alias',
+			'ac_r'
 		]);
+		$this->__view("home/main.php", compact('role_access', 'filed'));
 	}
 
 	/**
