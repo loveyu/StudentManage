@@ -323,6 +323,36 @@ SQL;
 		return false;
 	}
 
+	public function report_curriculum($mc_id, $info = []){
+		$sql = <<<SQL
+SELECT
+	scores.is_id,
+	scores.sc_test,
+	scores.sc_work,
+	scores.sc_total,
+	info_student.is_name,
+	info_class.icl_number
+FROM
+	scores
+INNER JOIN info_student on info_student.is_id = scores.is_id
+INNER JOIN info_class on info_class.icl_id = info_student.icl_id
+WHERE
+	mc_id = :mc_id
+SQL;
+		$r = [];
+		foreach($info as $n => $v){
+			$sql .= " AND $n=:" . str_replace(".", "_", $n);
+			$r[":" . str_replace(".", "_", $n)] = $v;
+		}
+		$r[':mc_id'] = $mc_id;
+		$stmt = $this->driver->getReader()->prepare($sql);
+		if($stmt->execute($r)){
+			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		}
+		var_dump($stmt->errorInfo());
+		return false;
+	}
+
 	public function base_info_insert($table, $info){
 		return $this->driver->insert($table, $info);
 	}

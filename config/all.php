@@ -166,6 +166,13 @@ return [
 		],
 		[
 			'url' => [
+				'Report',
+			],
+			'name' => '成绩报表查询',
+			'access' => 'scores_list_report'
+		],
+		[
+			'url' => [
 				'Home',
 				'logout'
 			],

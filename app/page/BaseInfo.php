@@ -178,8 +178,27 @@ class BaseInfo extends Page{
 					'cu_name'
 				], ['ico_id' => $id]), "cu_id", 'cu_name'));
 				break;
+			case "mc_select_year_by_id":
+				echo json_encode(list2keymap($db->select("mg_curriculum", [
+					'mc_year'
+				], [
+					'id_id' => $id,
+					'GROUP' => 'mc_year'
+				]), "mc_year", 'mc_year'));
+				break;
+			case "mc_select_number_by_id_year":
+				echo json_encode(list2keymap($db->select("mg_curriculum", [
+					'mc_number'
+				], [
+					'AND'=>['id_id' => $id,'mc_year'=>$t],
+					'GROUP' => 'mc_number'
+				]), "mc_number", 'mc_number'));
+				break;
 			default:
-				echo ['msg'=>'未定义内容','status'=>false];
+				echo [
+					'msg' => '未定义内容',
+					'status' => false
+				];
 				break;
 		}
 	}

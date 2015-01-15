@@ -104,3 +104,11 @@ h4.not_found {
 	padding: 20px;
 	border-left: 10px solid #555;
 }
+
+table.report th,table.report td{
+	text-align: center;
+	vertical-align: middle;
+}
+table.report>thead>tr>th{
+	vertical-align: middle;
+}
