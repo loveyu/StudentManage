@@ -102,14 +102,37 @@ class Login{
 
 	public function edit_pwd($old, $new){
 		$this->db = db_class();
-		$info = $this->db->get_admin_info($this->user_info['name']);
-		if(salt_hash(md5_xx($old), $info['a_salt']) != $info['a_pwd']){
-			return "原密码错误";
-		}
-		$update = ['a_salt' => salt(32)];
-		$update['a_pwd'] = salt_hash(md5_xx($new), $update['a_salt']);
-		if($this->db->update_user_info($this->user_info['name'], $update) == 1){
-			return true;
+		switch($this->login_type){
+			case "admin":
+				$info = $this->db->get_admin_info($this->user_info['name']);
+				if(salt_hash(md5_xx($old), $info['a_salt']) != $info['a_pwd']){
+					return "原密码错误";
+				}
+				$update = ['a_salt' => salt(32)];
+				$update['a_pwd'] = salt_hash(md5_xx($new), $update['a_salt']);
+				if($this->db->update_user_info($this->user_info['name'], $update) == 1){
+					return true;
+				}
+				break;
+			case "teacher":
+				$info = $this->db->get_teacher_info_by_id($this->user_info['it_id']);
+				if($info['it_password'] != $old){
+					return "原密码错误";
+				}
+				if($this->db->base_info_edit("info_teacher", ['it_password' => $new], ['it_id' => $info['it_id']]) == 1){
+					return true;
+				}
+				break;
+				break;
+			case "student":
+				$info = $this->db->get_student_info_by_id($this->user_info['is_id']);
+				if($info['is_password'] != $old){
+					return "原密码错误";
+				}
+				if($this->db->base_info_edit("info_student", ['is_password' => $new], ['is_id' => $info['is_id']]) == 1){
+					return true;
+				}
+				break;
 		}
 		return "修改密码失败";
 	}

@@ -10,7 +10,7 @@ $this->get_header();
 	<dl class="dl-horizontal user-info">
 		<dt>基本信息</dt>
 		<dd>
-			<strong><?php echo $detail['user']['name'] ?></strong><i>(<?php echo user_status($detail['user']['status']) ?>
+			<strong><?php echo $detail['user']['name'] ?></strong>[<?php echo $detail['user']['id']?>]<i>(<?php echo user_status($detail['user']['status']) ?>
 				)</i>，<?php echo role_info($detail['role']) ?>
 		</dd>
 		<?php if($detail['user']['login_type'] == "admin"): ?>
