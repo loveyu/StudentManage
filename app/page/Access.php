@@ -290,6 +290,10 @@ class Access extends Page{
 		if(!$this->check()){
 			return;
 		}
+		$rt = [
+			'status' => false,
+			'msg' => ''
+		];
 		$a_name = trim($this->__req->post('name'));
 		$a_id = trim($this->__req->post('id'));
 		$r_id = trim($this->__req->post('role'));
