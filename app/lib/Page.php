@@ -83,10 +83,10 @@ class Page extends \Core\Page{
 	public function get_user_menu($class = "active"){
 		$list = cfg()->get('menu');
 		$rt = "";
-		$ui = implode("/", $this->__uri->getUriInfo()->getUrlList());
+		$ui = $this->__uri->getUriInfo()->getUrlList();
 		$access = access_class();
 		foreach($list as $v){
-			$flag = $ui == implode("/", $v['url']);
+			$flag = $this->menu_rule_check($v['url'], $ui);
 			if((!isset($v['role']) || login_class()->check_role($v['role'])) && (!isset($v['hide']) || !$v['hide'] || ($v['hide'] && $flag[0]))){
 				if(isset($v['access']) && !$access->has($v['access'])){
 					continue;
@@ -95,6 +95,22 @@ class Page extends \Core\Page{
 			}
 		}
 		return $rt;
+	}
+
+	private function menu_rule_check($check, $now_url){
+		if(count($check) == 0){
+			if(count($check) == count($now_url)){
+				return true;
+			} else{
+				return false;
+			}
+		}
+		for($i = 0; $i < count($check); $i++){
+			if(!isset($now_url[$i]) || $check[$i] != $now_url[$i]){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public function permission_deny(){
@@ -113,9 +129,9 @@ class Page extends \Core\Page{
 		} else{
 			echo $content;
 		}
-//		@ob_flush();
+		//		@ob_flush();
 		@flush();
-//		@ob_end_flush();
+		//		@ob_end_flush();
 	}
 
 }

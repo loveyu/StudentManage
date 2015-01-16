@@ -45,6 +45,11 @@ return [
 				'type' => 'text',
 				'size' => 10
 			],
+			'ico_name' => [
+				'name' => '名称',
+				'type' => 'text',
+				'like' => 1
+			],
 			'ic_name' => [
 				'name' => '校区',
 				'type' => 'select',
