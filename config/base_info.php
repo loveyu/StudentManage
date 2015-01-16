@@ -577,7 +577,7 @@ return [
 				'list' => array_number_dd(date('Y'), 1998, true)
 			],
 			'id_id' => [
-				'name' => '专业',
+				'name' => '专业ID',
 				'type' => 'text',
 				'size' => 10,
 			],
