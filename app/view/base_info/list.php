@@ -5,9 +5,11 @@
  * @var $__type  string
  * @var $__query \ULib\QueryList
  */
-$this->get_header(); ?>
+$this->get_header();
+$is_write = access_class()->write($__type);
+?>
 	<h3><?php echo $__info['name'] ?>
-		<?php if(access_class()->write($__type)): ?><a class="btn btn-primary btn-sm" href="<?php echo get_url('BaseInfo', 'op', $__type, "add") ?>">
+		<?php if($is_write): ?><a class="btn btn-primary btn-sm" href="<?php echo get_url('BaseInfo', 'op', $__type, "add") ?>">
 				添加</a><?php endif; ?>
 	</h3>
 <?php if(isset($__info['search'])){
@@ -61,7 +63,10 @@ $this->get_header(); ?>
 if(!$__query->has_data()):
 	echo "<h4 class='bg-danger not_found'>数据未找到</h4>";
 else:
-	echo "<table class='table table-striped  table-hover'" . (isset($__info['list_style']) ? " style=\"{$__info['list_style']}\"" : "") . "><thead><tr><th>操作</th>";
+	echo "<table class='table table-striped  table-hover'" . (isset($__info['list_style']) ? " style=\"{$__info['list_style']}\"" : "") . "><thead><tr>";
+	if($is_write){
+		echo "<th>操作</th>";
+	}
 	foreach($__query->getFiled() as $name => $v){
 		if(isset($__info['filed'][$name]['no_out'])){
 			continue;
@@ -73,7 +78,10 @@ else:
 	$pks = [];
 	foreach($__query->getData() as $v){
 		$pks[$i] = [];
-		echo "<tr id=\"TR_ID_{$i}\"><td><a href='#' class='btn btn-warning btn-sm' onclick=\"return edit({$i})\">编辑</a>", "<a class='btn btn-danger btn-sm' href='#' onclick=\"return del({$i})\">删除</a></td>";
+		echo "<tr id=\"TR_ID_{$i}\">";
+		if($is_write){
+			echo "<td><a href='#' class='btn btn-warning btn-sm' onclick=\"return edit({$i})\">编辑</a>", "<a class='btn btn-danger btn-sm' href='#' onclick=\"return del({$i})\">删除</a></td>";
+		}
 		foreach($v as $name => $value){
 			if(isset($__info['filed'][$name]['no_out'])){
 				continue;

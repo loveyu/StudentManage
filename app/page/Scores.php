@@ -28,11 +28,13 @@ class Scores extends Page{
 			$this->permission_deny();
 			return;
 		}
+		$this->setTitle("教师课程表");
 		$this->__view("scores/teacher_list.php");
 	}
 
 	public function my_list(){
 		$access = access_class();
+		$this->setTitle("学生课程");
 		if(login_class()->is_login() && login_class()->getLoginType() == "student" && !$access->read("my_curriculum")){
 			$this->permission_deny();
 			return;
@@ -41,6 +43,7 @@ class Scores extends Page{
 	}
 
 	public function teacher_add_scores(){
+		$this->setTitle("成绩添加");
 		$access = access_class();
 		$login = login_class();
 		if($login->is_login() && $login->getLoginType() == "teacher" && !$access->write("teacher_add_scores")){

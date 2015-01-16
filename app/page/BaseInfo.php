@@ -57,15 +57,18 @@ class BaseInfo extends Page{
 		];
 		switch($action){
 			case 'add':
+				$this->setTitle("添加 ".$info['info']['name']);
 				$this->__view("base_info/add.php", $info);
 				break;
 			case 'list':
+				$this->setTitle("查询 ".$info['info']['name']);
 				$query = query_class();
 				$query->setBaseInfo($info);
 				$info['query'] = $query;
 				$this->__view("base_info/list.php", $info);
 				break;
 			case 'edit':
+				$this->setTitle("编辑 ".$info['info']['name']);
 				$x_info = [];
 				foreach($this->info_data[$type]['filed'] as $name => $v){
 					if(isset($v['pk'])){
