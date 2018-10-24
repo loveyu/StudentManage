@@ -72,6 +72,6 @@
 		</fieldset>
 	</form>
 </div>
-<?php include __DIR__."/../common/footer.php"?>
+<?php include __DIR__."/../common/stat.php"?>
 </body>
 </html>

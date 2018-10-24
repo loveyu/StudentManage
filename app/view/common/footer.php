@@ -4,6 +4,6 @@
 </div></div>
 </div>
 </div>
-<?php include __DIR__."/footer.php"?>
+<?php include __DIR__."/stat.php"?>
 </body>
 </html>
