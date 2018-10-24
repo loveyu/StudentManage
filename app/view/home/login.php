@@ -27,6 +27,11 @@
 			<?php if(isset($__msg) && !empty($__msg)): ?>
 				<p class="text-danger"><b><?php echo $__msg ?></b></p>
 			<?php endif; ?>
+			<?php if($_SERVER['HTTP_HOST']==="demo.loveyu.net"):?>
+			<p class="text-warning">
+				默认管理员：<code>loveyu</code>,<code>help</code>，密码：<code>123456</code>
+			</p>
+			<?php endif; ?>
 			<div class="form-group">
 				<label class="sr-only" for="user_name">用户：</label>
 
