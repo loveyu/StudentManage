@@ -42,6 +42,7 @@
 	* 默认超级管理员：`loveyu`，密码：`123456`
 	* 默认信息管理员：`help`，密码：`123456`
 	* 学生和教师默认密码均为`123456`
+6. 针对默认密码不正确的情形，可以采取`salt_hash(md5_xx($password), $salt)` 计算数据库密码，并替换
 	
 ### 反馈及演示
 * 演示: [http://demo.loveyu.net/StudentManage/](http://demo.loveyu.net/StudentManage/)

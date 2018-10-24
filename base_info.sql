@@ -68,7 +68,7 @@ AUTO_INCREMENT=3
 -- Records of admin
 -- ----------------------------
 BEGIN;
-INSERT INTO `admin` VALUES ('1', 'loveyu', '70a1666221690aa80f395200823877aa9e91a39cc531821f2a8e7053017f8eb6', 'r)XEsXO;WF(PPR)=!4Yu\\yI.rq)]\"%6\"', '1', '192.168.*|127.0.0.1', '0'), ('2', 'help', '6263c364a5206f7f0e63bdc234de5a0255ddb0a54f61bed04805a3b4fee2790c', '1uB&|Mw[Q8K*5Q,,vQ_b8/>&!&n^W3ur', '2', '*', '0');
+INSERT INTO `admin` VALUES ('1', 'loveyu', 'deea8ea6614024b318219bf38e2449044909760ed53931abd1645dd5f0182fda', 'r)XEsXO;WF(PPR)=!4Yu\\yI.rq)]\"%6\"', '1', '192.168.*|127.0.0.1', '0'), ('2', 'help', 'b68de437568bfb559e8200a685fa028095cb2320c2b7a2c41924abba03621f96', '1uB&|Mw[Q8K*5Q,,vQ_b8/>&!&n^W3ur', '2', '*', '0');
 COMMIT;
 
 -- ----------------------------
