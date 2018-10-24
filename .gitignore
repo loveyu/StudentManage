@@ -5,3 +5,4 @@ app/log/*.log
 test
 app/page/DataCreate.php
 Readme.html
+config/all.php
