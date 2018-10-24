@@ -12,7 +12,9 @@
 	<link rel="stylesheet" href="<?php echo $this->get_bootstrap('css/bootstrap.min.css'); ?>"/>
 	<link rel="stylesheet" href="<?php echo $this->get_bootstrap('css/bootstrap-theme.min.css'); ?>"/>
 	<link rel="stylesheet" href="<?php echo $this->get_asset('css/style.css'); ?>"/>
+	<script type="text/javascript" src="<?php echo $this->get_asset('js/jquery.js'); ?>"></script>
 	<script type="text/javascript" src="<?php echo $this->get_bootstrap('js/bootstrap.min.js'); ?>"></script>
+	<script type="text/javascript" src="<?php echo $this->get_asset("js/jquery.form.js") ?>"></script>
 </head>
 <body class="login-bg container-fluid">
 <div class="row">
