@@ -29,7 +29,7 @@ function md5_xx($str){
  * @return string
  */
 function salt_hash($hash, $salt){
-	$count = count($salt);
+	$count = strlen($salt);
 	return _hash(substr($salt, 0, $count / 2) . $hash . $salt);
 }
 
