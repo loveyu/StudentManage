@@ -355,7 +355,7 @@ class medoo implements CLib\SqlInterface{
 				}
 			}
 
-			$table .= ' ' . implode($table_join, ' ');
+			$table .= ' ' .implode(' ', $table_join);
 		} else{
 			$where = $columns;
 			$columns = $join;

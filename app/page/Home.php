@@ -21,6 +21,7 @@ class Home extends Page{
 		}
 		$cgf = cfg();
 		$this->setTitle("管理");
+        $filed = [];// default
 		switch(login_class()->getLoginType()){
 			case "teacher":
 				$cgf->load(_RootPath_ . "/config/base_info.php");
