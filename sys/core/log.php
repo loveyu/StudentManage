@@ -100,11 +100,14 @@ class Log{
 	/**
 	 * 程序结束错误信息输出
 	 */
-	public static function phpShowdownLog(){
-		if(($e = error_get_last()) && $e['type'] == E_ERROR || $e['type'] == E_COMPILE_ERROR){
-			call_user_func_array('\Core\Log::phpErrorLog', $e);
-		}
-	}
+    public static function phpShowdownLog(){
+        $e = error_get_last();
+        if (!empty($e)) {
+            if ($e['type'] == E_ERROR || $e['type'] == E_COMPILE_ERROR) {
+                call_user_func_array('\Core\Log::phpErrorLog', $e);
+            }
+        }
+    }
 
 	/**
 	 * 记录系统错误提示信息
